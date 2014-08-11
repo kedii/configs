@@ -1,0 +1,36 @@
+
+встановка нового терміналу:
+     sudo apt-get install sakura
+     sudo update-alternatives --config x-terminal-emulator # вибір терміналу за замовчуванням 
+#переназначаємо Ctrl на Caps Lock
+     setxkbmap -option "ctrl:nocaps" 
+Відкрити термінал: Ctrl+Alt+T.
+Очищення строки: Ctrl+U.
+Вміст папки:
+     ls
+     ll
+     ls -l
+Копіювати, вставити: C-S-c, C-S-v.
+Перейти в іншу папку:
+     cd /        #root dir
+     cd /bin 
+     cd ./.i3   #relative to current dir
+     cd ~       #home (user) dir
+     cd ~/.i3
+     pwd        #show path to current dir
+     cd ..        #one folder back (parent dir)
+Вивід вмісту файлу на екран:
+     cat config          
+     cat config | less  #show in viewer 
+#кнопки які можна нажимати в less:
+j,k           #one line down,up
+C-f, C-b   #one page down,up
+q             #exit
+/word     # шукає по документу (n - next word in text, N - previous word in text)
+
+# keys 
+<C-p>,<C-n>	# instead of arrow up/down
+<C-a>,<C-e>	# instead of home/end
+<C-d>,<C-h>	# instead of delete/backspace 
+<C-j>,<C-m>	# instead of enter 
+<C-u>      	# delete all till cursor 
