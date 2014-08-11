@@ -1,0 +1,18 @@
+#copy dir from net to here 
+git clone https://github.com/kedii/configs.git
+
+# create link to file in another dir
+ln -s -v ~/rep/configs/i3/ .i3
+
+
+# git settings
+git config --global user.email "gottin.kedi@gmail.com"
+git config --global user.name "Kedi"
+git config --global push.default simple
+
+# workflow
+git status		# watch new/changed files
+git add i3 			# add file to backup list
+git reset i3/config_		# remove file from backup list	
+git commit -m "add i3 config"  # do backup with message
+git push		# copy to server
