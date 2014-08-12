@@ -1,0 +1,24 @@
+#!/bin/bash
+
+ins(){
+	sudo apt-get -y install $*
+	echo "-----> $*" 
+}
+ins i3 i3status i3lock suckless-tools feh dunst libnotify-bin xdotool kbdd
+
+# i3        # fast tiling windows manager
+# suckless-tools # dmenu by i3+D and others
+# feh       # simple image viewer and desktop wallpaper setter
+# dunst     # from j4tools for i3 -- notifier in top-right corner
+# libnotify-bin # notifier in window for long running commands (see bashrc) like $ sleep 10; alert
+# xdotool   # for correct working modes, and for ability naming worksps as focused wnds
+# kbdd      # keep different layouts for apps
+
+ins vim vim.gtk xsel 
+ins ranger
+ins rxvt-unicode-256color htop
+
+# set default programs
+sudo update-alternatives --set vim /usr/bin/vim.gtk
+sudo update-alternatives --set editor /usr/bin/vim.gtk
+sudo update-alternatives --set x-terminal-emulator /usr/bin/urxvt

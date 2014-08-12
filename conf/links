@@ -1,14 +1,26 @@
 #!/bin/bash
 
 dir="$PWD"
-if [ -L ~/.i3 ]; then
-    rm ~/.i3
-    ln -sv "$dir"/i3 ~/.i3
-fi   
+lndir(){
+	if [ ! -d ~/.$1 ] || [ -L ~/.$1 ]; then
+	if [ -L ~/.$1 ]; then
+	    rm ~/.$1
+	fi   
+	    ln -sv "$dir"/$1 ~/.$1
+fi
+	
+}
 ln -svf "$dir"/pentadactylrc ~/.pentadactylrc
 
 mkdir -p ~/.config/gtk-3.0
 ln -svf "$dir/settings.ini" ~/.config/gtk-3.0/settings.ini 
 ln -svf "$dir/gtkrc-2.0" ~/."gtkrc-2.0"
+ln -svf "$dir/Xresources" ~/."Xresources"
+ln -svf "$dir/profile" ~/."profile"
+ln -svf "$dir/bashrc" ~/."bashrc"
 
-
+lndir i3
+lndir urxvt
+lndir bin 
+lndir ranger
+ln -svf ~/.ranger ~/.config/ranger 

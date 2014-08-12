@@ -280,8 +280,8 @@ mode "GoTo mark: 0..9, Mod+G" {
     bindsym Escape $mdef 
     bindsym space $mdef 
 }
-bindsym $mod+v [class="(?i)sakura" title="(?i)vim"] focus
-bindsym $mod+r [class="(?i)sakura" title="(?i)ranger"] focus
+bindsym $mod+v [class="(?i)urxvt" title="(?i)vim"] focus
+bindsym $mod+r [class="(?i)urxvt" title="(?i)ranger"] focus
 
 ### =================== Modify ===================== ###
 
@@ -348,13 +348,13 @@ mode "$system_mode" {
 ### Mode: Open ###
 bindsym $mod+o mode "Open: r v n h, g t z w, p l a s"
 mode "Open: r v n h, g t z w, p l a s" {
-    bindsym r exec --no-startup-id sakura -name Float -e ranger, $mdef
-    bindsym v exec --no-startup-id sakura -name Float -e vim, $mdef
-    bindsym n exec --no-startup-id sakura -name Float -e ncmpcpp, $mdef
-    bindsym h exec --no-startup-id sakura -name Float -e htop, $mdef
-    bindsym w exec --no-startup-id sakura -name Float -e w3m google.com, $mdef
-    bindsym p exec --no-startup-id sakura -name Float -e gksudo powertop, $mdef
-    bindsym l exec --no-startup-id sakura -name Float -e gksudo tlp start, $mdef
+    bindsym r exec --no-startup-id urxvt -name Float -e ranger, $mdef
+    bindsym v exec --no-startup-id urxvt -name Float -e vim, $mdef
+    bindsym n exec --no-startup-id urxvt -name Float -e ncmpcpp, $mdef
+    bindsym h exec --no-startup-id urxvt -name Float -e htop, $mdef
+    bindsym w exec --no-startup-id urxvt -name Float -e w3m google.com, $mdef
+    bindsym p exec --no-startup-id urxvt -name Float -e gksudo powertop, $mdef
+    bindsym l exec --no-startup-id urxvt -name Float -e gksudo tlp start, $mdef
 
     bindsym g exec --no-startup-id gvim, $mdef
     bindsym t exec --no-startup-id gvim.tex, $mdef
@@ -371,10 +371,10 @@ mode "Open: r v n h, g t z w, p l a s" {
 ### Mode: Focus ###
 bindsym $mod+y mode "Focus: r v n h, g t z w"
 mode "Focus: r v n h, g t z w" {
-    bindsym r [class="(?i)sakura" title="(?i)ranger"] focus, $mdef
-    bindsym v [class="(?i)sakura" title="(?i)vim"] focus, $mdef
-    bindsym n [class="(?i)sakura" title="(?i)ncmpcpp"] focus, $mdef
-    bindsym h [class="(?i)sakura" title="(?i)htop"] focus, $mdef
+    bindsym r [class="(?i)urxvt" title="(?i)ranger"] focus, $mdef
+    bindsym v [class="(?i)urxvt" title="(?i)vim"] focus, $mdef
+    bindsym n [class="(?i)urxvt" title="(?i)ncmpcpp"] focus, $mdef
+    bindsym h [class="(?i)urxvt" title="(?i)htop"] focus, $mdef
 
     bindsym g [class="(?i)gvim"] focus, $mdef
     bindsym t [class="(?i)gvim.tex"] focus, $mdef
@@ -387,9 +387,9 @@ mode "Focus: r v n h, g t z w" {
 }
 
 ### Run: Prgs ###
-bindsym $mod+Return exec --no-startup-id sakura
-bindsym $mod+Control+Return exec --no-startup-id sakura -name Float
-bindsym $mod+Shift+Return exec --no-startup-id sakura -name Float -e ranger-auto
+bindsym $mod+Return exec --no-startup-id urxvt
+bindsym $mod+Control+Return exec --no-startup-id urxvt -name Float
+bindsym $mod+Shift+Return exec --no-startup-id urxvt -name Float -e ranger-auto
 
 ### Run: Menus ###
 bindsym $mod+d exec "dmenu_run -p 'yes, master?' -nb '#000000' -nf '#B0E0E6' -sb '#421C84' -sf '#FFFF00'"
@@ -432,8 +432,8 @@ bindsym $mod+Control+End exec --no-startup-id ncmpcpp stop
 
 ### Windows: Settings ###
 assign [class="^Wuala$"] 10
-assign [class="^Pale\ moon$"] 10
-for_window [class="(?i)sakura" instance="(?i)^Float*"] floating enable
+#assign [class="^Pale\ moon$"] 4
+for_window [class="(?i)urxvt" instance="(?i)^Float*"] floating enable
 for_window [window_role="pop-up"] floating enable
 
 ### ================== Bar & Theme ================= ###
