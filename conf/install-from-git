@@ -1,0 +1,54 @@
+#!/bin/bash
+
+CURR_DIR_PKG=~/inst
+
+git_install() { # $1 - git rep, $2 - dir name
+    local PR_DIR=${1##*/} BUILD_DIR
+    if [ -z "$CURR_DIR_PKG" ]; then echo "Error: CURR_DIR_PKG not set. Skip installing."; exit 1; fi
+    PR_DIR="$CURR_DIR_PKG/${PR_DIR,,}"
+
+    if [ -d "$PR_DIR" ]; then
+        cd "$PR_DIR"
+        git pull
+    else
+        git clone --depth 1 "https://github.com/$1" "$PR_DIR"
+        cd "$PR_DIR"
+    fi
+
+    # It can be, that 'autoreconf' can replace my own vehicle.
+    if [ -f "$PR_DIR/CMakeLists.txt" ]; then
+        BUILD_DIR="$PR_DIR/build"
+        mkdir -p "$BUILD_DIR"
+        cmake -E chdir "$BUILD_DIR" cmake "$BUILD_OPTIONS" "$PR_DIR"
+        cd "$BUILD_DIR"
+        sudo make install
+    elif [ -f "$PR_DIR/setup.py" ]; then
+        sudo python setup.py install
+    elif [ -f "$PR_DIR/Makefile" ]; then
+        cd "$PR_DIR"
+        make
+        sudo make install
+    elif [ -f "$PR_DIR/configure.ac" ]; then
+        autoreconf --install
+        BUILD_DIR="$PR_DIR/build"
+        mkdir -p "$BUILD_DIR"
+        cd "$BUILD_DIR"
+        ../configure
+        make
+        sudo make install
+    fi
+}
+
+# git_install 'ierton/xkb-switch'
+git_install 'vivien/i3blocks'
+git_install 'hluk/CopyQ'
+git_install 'alols/xcape'
+
+# pgrep kbdd
+# pkill kbdd
+# pgrep kbdd
+# kbdd &
+# pgrep kbdd
+
+
+

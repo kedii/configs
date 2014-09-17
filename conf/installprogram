@@ -2,21 +2,36 @@
 
 ins(){
 	sudo apt-get -y install $*
-	echo "-----> $*" 
+	echo "-----> $*"
 }
 ins i3 i3status i3lock suckless-tools feh dunst libnotify-bin xdotool kbdd
 
-# i3        # fast tiling windows manager
-# suckless-tools # dmenu by i3+D and others
-# feh       # simple image viewer and desktop wallpaper setter
-# dunst     # from j4tools for i3 -- notifier in top-right corner
-# libnotify-bin # notifier in window for long running commands (see bashrc) like $ sleep 10; alert
-# xdotool   # for correct working modes, and for ability naming worksps as focused wnds
-# kbdd      # keep different layouts for apps
+	# i3        # fast tiling windows manager
+	# suckless-tools # dmenu by i3+D and others
+	# feh       # simple image viewer and desktop wallpaper setter
+	# dunst     # from j4tools for i3 -- notifier in top-right corner
+	# libnotify-bin # notifier in window for long running commands (see bashrc) like $ sleep 10; alert
+	# xdotool   # for correct working modes, and for ability naming worksps as focused wnds
+	# kbdd      # keep different layouts for apps
 
-ins vim vim.gtk xsel 
-ins ranger
+ins vim vim.gtk xsel libclang-dev exuberant-ctags python-dev silversearcher-ag
+
+ins ranger fbi caca-utils highlight atool w3m w3m-img poppler-utils mediainfo colordiff
+# caca-utils # (img2txt) Colour AsCii Art library. cacaview - image viewer for the terminal. The user can zoom and scroll the image, set the dithering method or enable anti-aliasing. cacaball is a tiny graphic program that renders animated ASCII metaballs on the screen, cacafire is a port of AALib's aafire and displays burning ASCII art flames, and cacademo is a simple application that shows the libcaca rendering features such as line and ellipses drawing, triangle filling and sprite blitting.
+# fbi        # framebuffer image viewer for terminal
+# atool     # previews of archives
+# highlight # syntax highlighting of code
+# w3m         # W3M supports images, so where are they? Well, terminals like GNOME Terminal and KDE’s Konsole can’t display W3M’s images. Other terminals, such as Xterm, can. W3M will also display images if you’re running it in a framebuffer console, so you don’t need an X server running to take advantage of this feature. W3M still doesn’t compare with desktop browsers — notably, it doesn’t support JavaScript. There’s an experimental w3m-js extension you can compile and install yourself, but I wouldn’t rely too much on that. Then again, do you really want JavaScript in a terminal browser?
+# poppler   # (pdftotext) for pdf previews
+# mediainfo or perl-image-exiftool # viewing information about media files
+
+ins nlkt gtypist
 ins rxvt-unicode-256color htop
+ins cmake build-essential gcc-multilib g++-multilib lib32stdc++6
+ins libqt4-dev libxfixes-dev libxtst-dev libxinerama-dev libqtwebkit-dev
+ins git gitk
+ins rtorrent
+ins fbreader zathura zathura-djvu
 
 # set default programs
 sudo update-alternatives --set vim /usr/bin/vim.gtk

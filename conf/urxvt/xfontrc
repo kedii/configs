@@ -6,11 +6,11 @@
 ! Fonts for Cairo and libXft
 Xft.antialias : true
 ! Стиль автохинтинга - hintnone *hintslight hintmedium hintfull
-Xft.hintstyle : hintslight
+Xft.hintstyle : hintfull
 Xft.hinting   : true
-Xft.autohint  : false
+Xft.autohint  : true
 ! unknown, rgb, bgr, vrgb, vbgr, none - геометрия для субпиксельного сглаживания
 Xft.rgba      : rgb
 ! тип фильтра для lcd мониторов - lcdnone lcddefault lcdlight lcdlegacy
-Xft.lcdfilter : lcddefault
+Xft.lcdfilter : lcdlegacy
 

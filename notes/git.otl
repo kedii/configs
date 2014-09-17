@@ -1,3 +1,17 @@
+# ssh-keys (~/.ssh)
+ssh-keygen -t rsa -C "gottin.kedi@gmail.com"
+# copy id_rsa.pub to github/gitlab
+
+# new clear repository
+mkdir tech
+cd tech
+git init
+touch README
+git add README
+git commit -m 'first commit'
+git remote add origin git@gitlab.com:kedii/tech.git
+git push -u origin master
+
 #copy dir from net to here 
 git clone https://github.com/kedii/configs.git
 
@@ -16,3 +30,9 @@ git add i3 			# add file to backup list
 git reset i3/config_		# remove file from backup list	
 git commit -m "add i3 config"  # do backup with message
 git push		# copy to server
+
+# get from server
+git stash   # hide all your changes 
+git pull --rebase --verbose  # +restruct; +information
+git stash pop   # return all changes back
+

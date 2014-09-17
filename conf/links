@@ -18,9 +18,13 @@ ln -svf "$dir/gtkrc-2.0" ~/."gtkrc-2.0"
 ln -svf "$dir/Xresources" ~/."Xresources"
 ln -svf "$dir/profile" ~/."profile"
 ln -svf "$dir/bashrc" ~/."bashrc"
+mkdir -p ~/.config/copyq
+ln -svf "$dir/copyq.conf" ~/.config/copyq/copyq.conf
 
 lndir i3
 lndir urxvt
 lndir bin 
 lndir ranger
 ln -svf ~/.ranger ~/.config/ranger 
+lndir vim
+ln -svf "$dir/vim/vimrc" ~/.vimrc

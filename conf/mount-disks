@@ -1,0 +1,5 @@
+#!/bin/bash
+#sudo fdisk -l  #show list disk partition (sda5)
+
+sudo cp $PWD/rc.local /etc/rc.local
+echo "rc.local copied"

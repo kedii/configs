@@ -1,0 +1,25 @@
+#!/bin/bash
+
+mkdir -p "$HOME/.cache/vim" # Dir for .swp and backup edited files
+
+FONT_DIR="$HOME/.vim/res/powerline-fonts"
+FONT_USE="DejaVuSansMono"
+
+# Patched fonts for windows usage:
+git clone --depth=1 https://github.com/Lokaltog/powerline-fonts "$FONT_DIR"
+
+    if [ ! -e "$HOME/.fonts/PowerlineSymbols.otf" ]; then
+        mkdir -p ~/.fonts/
+        cp ~/.vim/res/PowerlineSymbols.otf ~/.fonts/   
+        mkdir -p ~/.config/fontconfig/conf.d/
+        cp ~/.vim/res/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
+        fc-cache -vf ~/.fonts
+    fi
+
+    FONT_DST="$HOME/.fonts/$FONT_USE"
+    if [ ! -d "$FONT_DST" ]; then
+        cp -urf "$FONT_DIR/$FONT_USE" "$FONT_DST"
+        fc-cache -vf ~/.fonts  # check active name with fc-list
+    fi
+
+echo "Vim font '$FONT_USE' installed"
