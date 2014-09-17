@@ -1,0 +1,42 @@
+#!/bin/bash
+
+DIR=/sys/class/power_supply/BAT0
+if [ ! -d "$DIR" ]; then exit 33; fi
+
+if [ $( cat "$DIR/present" ) -eq 1 ]; then
+    buf=$( awk "BEGIN {
+        curr=$(cat $DIR/current_now)/1000000
+        volt=$(cat $DIR/voltage_now)/1000000
+        full=$(cat $DIR/charge_full_design)/1000000
+        chrg=$(cat $DIR/charge_now)/1000000
+        watt=(curr * volt )
+        hours=int(chrg / curr)
+        minut=int(60 * (chrg / curr - hours))
+        "'
+        printf "watt=%.2f\n", watt
+        printf "time=%d:%02d\n", hours, minut
+    }' );
+    eval $buf
+
+    # time=$( awk 'BEGIN { printf("%dh", ('"${watt}"'))}' )
+    percent=$( cat $DIR/capacity )
+    stat=$( cat $DIR/status )
+
+      if [ $percent -ge 80 ]; then color="#FFF6AA"
+    elif [ $percent -ge 60 ]; then color="#FFFF40"
+    elif [ $percent -ge 40 ]; then color="#FFEE20"
+    elif [ $percent -ge 20 ]; then color="#FF8800"
+    elif [ $percent -ge 6  ]; then color="#FF0000"
+    else color="#AA00AA"; fi
+
+    if [ "$stat" == "Charging" ]; then
+        stat='ϟ'; arr='▲'; #⚡
+        color="#${color:5:2}${color:3:2}${color:1:2}"
+    else stat='☯'; arr='▼'; fi
+
+    bat="$stat $percent%% ${time} $arr ${watt}W"
+
+else bat="☯"; color="#FF00AA"; fi
+
+printf "$bat\n$bat\n$color\n"
+

@@ -94,7 +94,7 @@ bindsym $mod+Control+a move container to workspace back_and_forth; workspace bac
 bindsym $mod+Control+Shift+a move container to workspace back_and_forth
 
 #i3-msg 'rename workspace "1: www" to "10: www"'
-bindsym $mod+z exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
+bindsym $mod+z exec i3-input -P 'WS Name: ' -F 'exec --no-startup-id ~/.i3/ext/rename_current_workspace "%s"'
 
 ### ==================== Workspaces ===================== ###
 
@@ -119,12 +119,18 @@ bindsym $mod+z exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
 bindsym $mod+i scratchpad show
 bindsym $mod+Shift+i move scratchpad
 
+# By default, scratchpads only contain a single window. However, containers can also be made a scratchpad.
+# Create a new container (for example, Mod+Enter), split it (Mod+v) and create another container. Focus the parent (Mod+a), split in the opposite direction (Mod+h), and create again.
+# Focus the first container (with focus parent as needed), make the window floating (Mod+Shift+Space), and move it to the scratchpad (Mod+Shift+-). You can now split containers to preference.
+# Note: Containers cannot be resized individually in floating windows. Resize the containers before making windows floating.
+# Tip: When only using terminal applications, consider a multiplexer such as tmux instead.
+
 # Use Mouse+$mod to drag floating windows to their wanted position
-# Change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# Change focus between tiling / floating windows #toggle/enable
 # Toggle tiling / floating (also remove current window from scratchpad)
-bindsym $mod+Shift+space floating toggle
-bindsym $mod+Control+space floating enable
+# mod+Control+space don't work with my xkb (no keycode!), use space for some more useful
+bindsym $mod+Shift+f focus mode_toggle
+bindsym $mod+Control+f floating toggle
 
 # Show the sup-mail scratchpad window, if any.
 # bindsym mod4+s [title="^Sup ::"] scratchpad show
@@ -159,61 +165,69 @@ bindsym $mod+Shift+bracketright focus output left; workspace next_on_output; foc
 ## Put this window on the presentation output.
 #bindsym $mod+x move container to output VGA1
 
+# Other miscellaneous keybindings.
+# bindsym XF86Sleep exec --no-startup-id systemctl suspend
+# bindsym Mod4+l exec --no-startup-id i3lock && xset s dpms force off
+# bindcode XF86Launch1 exec /usr/bin/pactl play-sample that_was_easy
+# bindcode 233 exec xbacklight -inc 20
+# bindcode 232 exec xbacklight -dec 20
+# bindcode 251 exec xbacklight -set 86
+
+bindsym $mod+x [urgent=latest] focus
 bindsym $mod+Insert exec --no-startup-id ~/.i3/ext/rename_as_focused
 
 
 ### =========== Script-generated items ============= ###
+
+### Bind: Refresh on i3mod ###
 set $mdef mode "default"
+set $upd ~/.i3/blocks/update
+
+set $w1 1:main
+set $w2 2:home
+set $w3 3:work
+set $w4 4:www
+set $w5 5:media
+set $w6 6
+set $w7 7
+set $w8 8
+set $w9 9
+set $w10 10
 
 ### ================== Workspaces ================== ###
 
-### WorkSpaces: Output ###
-workspace 1:main output HDMI1
-workspace 2:home output HDMI1
-workspace 3:work output HDMI1
-workspace 4:www output HDMI1
-workspace 5 output HDMI1
-workspace 6 output eDP1
-workspace 7 output eDP1
-workspace 8 output eDP1
-workspace 9 output eDP1
-workspace 10 output eDP1
-
 ### WorkSpaces: Focus ###
-bindsym $mod+1 workspace number 1:main
-bindsym $mod+2 workspace number 2:home
-bindsym $mod+3 workspace number 3:work
-bindsym $mod+4 workspace number 4:www
-bindsym $mod+5 workspace number 5
-bindsym $mod+6 workspace number 6
-bindsym $mod+7 workspace number 7
-bindsym $mod+8 workspace number 8
-bindsym $mod+9 workspace number 9
-bindsym $mod+0 workspace number 10
+bindsym $mod+1 workspace number $w1
+bindsym $mod+2 workspace number $w2
+bindsym $mod+3 workspace number $w3
+bindsym $mod+4 workspace number $w4
+bindsym $mod+5 workspace number $w5
+bindsym $mod+6 workspace number $w6
+bindsym $mod+7 workspace number $w7
+bindsym $mod+8 workspace number $w8
+bindsym $mod+9 workspace number $w9
+bindsym $mod+0 workspace number $w10
 
 ### WorkSpaces: Move container ###
-bindsym $mod+Control+1 move container to workspace number 1:main, workspace number 1:main
-bindsym $mod+Control+2 move container to workspace number 2:home, workspace number 2:home
-bindsym $mod+Control+3 move container to workspace number 3:work, workspace number 3:work
-bindsym $mod+Control+4 move container to workspace number 4:www, workspace number 4:www
-bindsym $mod+Control+5 move container to workspace number 5, workspace number 5
-bindsym $mod+Control+6 move container to workspace number 6, workspace number 6
-bindsym $mod+Control+7 move container to workspace number 7, workspace number 7
-bindsym $mod+Control+8 move container to workspace number 8, workspace number 8
-bindsym $mod+Control+9 move container to workspace number 9, workspace number 9
-bindsym $mod+Control+0 move container to workspace number 10, workspace number 10
+bindsym $mod+Control+1 move container to workspace number $w1, workspace number $w1
+bindsym $mod+Control+2 move container to workspace number $w2, workspace number $w2
+bindsym $mod+Control+3 move container to workspace number $w3, workspace number $w3
+bindsym $mod+Control+4 move container to workspace number $w4, workspace number $w4
+bindsym $mod+Control+5 move container to workspace number $w5, workspace number $w5
+bindsym $mod+Control+6 move container to workspace number $w6, workspace number $w6
+bindsym $mod+Control+7 move container to workspace number $w7, workspace number $w7
+bindsym $mod+Control+8 move container to workspace number $w8, workspace number $w8
+bindsym $mod+Control+9 move container to workspace number $w9, workspace number $w9
+bindsym $mod+Control+0 move container to workspace number $w10, workspace number $w10
 
 ### WorkSpaces: Move container ###
-bindsym $mod+Control+Shift+1 move container to workspace number 1:main
-bindsym $mod+Control+Shift+2 move container to workspace number 2:home
-bindsym $mod+Control+Shift+3 move container to workspace number 3:work
-bindsym $mod+Control+Shift+4 move container to workspace number 4:www
-bindsym $mod+Control+Shift+5 move container to workspace number 5
-bindsym $mod+Control+Shift+6 move container to workspace number 6
-bindsym $mod+Control+Shift+7 move container to workspace number 7
-bindsym $mod+Control+Shift+8 move container to workspace number 8
-bindsym $mod+Control+Shift+9 move container to workspace number 9
-bindsym $mod+Control+Shift+0 move container to workspace number 10
+bindsym $mod+Shift+1 move container to workspace number $w1
+bindsym $mod+Shift+2 move container to workspace number $w2
+bindsym $mod+Shift+3 move container to workspace number $w3
+bindsym $mod+Shift+4 move container to workspace number $w4
+bindsym $mod+Shift+5 move container to workspace number $w5
+bindsym $mod+Shift+6 move container to workspace number $w6
+bindsym $mod+Shift+7 move container to workspace number $w7
 
 ### ================== Navigation ================== ###
 
@@ -288,6 +302,10 @@ bindsym $mod+r [class="(?i)urxvt" title="(?i)ranger"] focus
 ### Containers: Modify ###
 bindsym $mod+c mode "Modify"
 mode "Modify" {
+    bindsym 1 exec --no-startup-id ~/.i3/ext/ratio_size 0.5, $mdef
+    bindsym 2 exec --no-startup-id ~/.i3/ext/ratio_size 0.667, $mdef
+    bindsym 3 exec --no-startup-id ~/.i3/ext/ratio_size 0.75, $mdef
+
     bindsym h resize shrink right 10 px or 2 ppt
     bindsym j resize grow down 10 px or 2 ppt
     bindsym k resize shrink down 10 px or 2 ppt
@@ -356,12 +374,15 @@ mode "Open: r v n h, g t z w, p l a s" {
     bindsym p exec --no-startup-id urxvt -name Float -e gksudo powertop, $mdef
     bindsym l exec --no-startup-id urxvt -name Float -e gksudo tlp start, $mdef
 
+    bindsym m exec --no-startup-id ~/.i3/ext/dmenu_mpd_fmove, $mdef
+
     bindsym g exec --no-startup-id gvim, $mdef
     bindsym t exec --no-startup-id gvim.tex, $mdef
     bindsym z exec --no-startup-id zathura, $mdef
     bindsym w exec --no-startup-id wuala, $mdef
     bindsym a exec --no-startup-id nemo --no-desktop, $mdef
     bindsym s exec --no-startup-id /usr/lib/cinnamon-settings/cinnamon-settings.py sound, $mdef
+    bindsym e exec --no-startup-id elona, $mdef
 
     bindsym Return $mdef 
     bindsym Escape $mdef 
@@ -392,14 +413,14 @@ bindsym $mod+Control+Return exec --no-startup-id urxvt -name Float
 bindsym $mod+Shift+Return exec --no-startup-id urxvt -name Float -e ranger-auto
 
 ### Run: Menus ###
-bindsym $mod+d exec "dmenu_run -p 'yes, master?' -nb '#000000' -nf '#B0E0E6' -sb '#421C84' -sf '#FFFF00'"
+bindsym $mod+d exec "dmenu_run -p 'yes, master?' -nb '#000000' -nf '#B0E0E6' -sb '#421C84' -sf '#FFFF00' -fn -misc-fixed-medium-r-normal-*-*-130-75-75-*-*-iso8859-2"
 bindsym $mod+u exec rofi -now -font 'Sans-10' -fg '#606060' -bg '#000000' -hlfg '#ffc964' -hlbg '#0C0C00' -o 85
 bindsym Print exec scrot '%Y%m%d_%H%M%S_$wx$h.png' -e 'mv $f ~/Downloads/'
 
 ### Languages ###
-bindsym $mod+Shift+0 exec --no-startup-id dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService     ru.gentoo.kbdd.set_layout uint32:0 && killall -SIGUSR1 i3status
-bindsym $mod+Shift+9 exec --no-startup-id dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService     ru.gentoo.kbdd.set_layout uint32:1 && killall -SIGUSR1 i3status
-bindsym $mod+Shift+8 exec --no-startup-id dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService     ru.gentoo.kbdd.set_layout uint32:2 && killall -SIGUSR1 i3status
+bindsym $mod+Shift+0 exec --no-startup-id dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService      ru.gentoo.kbdd.set_layout uint32:0 && $upd lang
+bindsym $mod+Shift+9 exec --no-startup-id dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService      ru.gentoo.kbdd.set_layout uint32:1 && $upd lang
+bindsym $mod+Shift+8 exec --no-startup-id dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService      ru.gentoo.kbdd.set_layout uint32:2 && $upd lang
 
 ### Autostart ###
 exec --no-startup-id auto-once
@@ -408,33 +429,39 @@ exec_always --no-startup-id auto-always
 ### ================= Multimedia =================== ###
 
 ### Control: volume ###
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse set Master 2%+ unmute && killall -SIGUSR1 i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse set Master 2%- unmute && killall -SIGUSR1 i3status
-bindsym XF86AudioMute exec --no-startup-id amixer -q -D pulse set Master toggle && killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse set Master 2%+ unmute && $upd volume
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse set Master 2%- unmute && $upd volume
+bindsym XF86AudioMute exec --no-startup-id amixer -q -D pulse set Master toggle && $upd volume
 
-bindsym $mod+Home exec --no-startup-id amixer -q -D pulse set Master 20% unmute && killall -SIGUSR1 i3status
-bindsym $mod+Prior exec --no-startup-id amixer -q -D pulse set Master 2%+ unmute && killall -SIGUSR1 i3status
-bindsym $mod+Next exec --no-startup-id amixer -q -D pulse set Master 2%- unmute && killall -SIGUSR1 i3status
-bindsym $mod+End exec --no-startup-id amixer -q -D pulse set Master toggle && killall -SIGUSR1 i3status
+bindsym $mod+Home exec --no-startup-id amixer -q -D pulse set Master 20% unmute && $upd volume
+bindsym $mod+Prior exec --no-startup-id amixer -q -D pulse set Master 2%+ unmute && $upd volume
+bindsym $mod+Next exec --no-startup-id amixer -q -D pulse set Master 2%- unmute && $upd volume
+bindsym $mod+End exec --no-startup-id amixer -q -D pulse set Master toggle && $upd volume
 
 ### Control: ncmpcpp ###
-bindsym XF86AudioPlay exec --no-startup-id ncmpcpp toggle
-bindsym XF86AudioNext exec --no-startup-id ncmpcpp next
-bindsym XF86AudioPrev exec --no-startup-id ncmpcpp prev
-bindsym XF86AudioStop exec --no-startup-id ncmpcpp stop
+bindsym XF86AudioPlay exec --no-startup-id ncmpcpp toggle && $upd mpd
+bindsym XF86AudioNext exec --no-startup-id ncmpcpp next && $upd mpd
+bindsym XF86AudioPrev exec --no-startup-id ncmpcpp prev && $upd mpd
+bindsym XF86AudioStop exec --no-startup-id ncmpcpp stop && $upd mpd
 
-bindsym $mod+Control+Home exec --no-startup-id ncmpcpp toggle
-bindsym $mod+Control+Prior exec --no-startup-id ncmpcpp next
-bindsym $mod+Control+Next exec --no-startup-id ncmpcpp prev
-bindsym $mod+Control+End exec --no-startup-id ncmpcpp stop
+bindsym $mod+Control+Home exec --no-startup-id ncmpcpp toggle && $upd mpd
+bindsym $mod+Control+Prior exec --no-startup-id ncmpcpp prev && $upd mpd
+bindsym $mod+Control+Next exec --no-startup-id ncmpcpp next && $upd mpd
+bindsym $mod+Control+End exec --no-startup-id ncmpcpp stop && $upd mpd
 
 ### =================== Windows ==================== ###
 
 ### Windows: Settings ###
-assign [class="^Wuala$"] 10
-#assign [class="^Pale\ moon$"] 4
+assign [class="^Firefox$"] $w4
+assign [class="^Pale\ moon$"] $w4
+assign [class="^Wine$"] $w9
+assign [class="^Wuala$"] $w10
+
 for_window [class="(?i)urxvt" instance="(?i)^Float*"] floating enable
 for_window [window_role="pop-up"] floating enable
+for_window [instance="feh"] fullscreen
+for_window [class="^Conky"] border none
+for_window [instance="^Download" class="^Firefox"] floating enable
 
 ### ================== Bar & Theme ================= ###
 bindsym $mod+grave bar mode toggle
@@ -450,10 +477,11 @@ client.unfocused        #333333 #222222 #888888 #d2691e
 client.urgent           #2f343a #900000 #ffffff #900000
 
 bar {
-    mode                dock    #<dock|hide|invisible>
-    position            bottom  # <top|bottom>
+    id                  bar-main # Specifies the bar ID for the configured bar instance (if many)
+    mode                dock     # <dock|hide|invisible>
+    position            bottom   # <top|bottom>
     workspace_buttons   yes
-    status_command      ~/.i3/i3status.sh
+    status_command      i3blocks -c ~/.i3/i3blocks.conf
     modifier            $mod
     
     font -misc-fixed-medium-r-normal--12-120-75-75-C-70-iso10646-1

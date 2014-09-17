@@ -26,7 +26,7 @@ ins ranger fbi caca-utils highlight atool w3m w3m-img poppler-utils mediainfo co
 # mediainfo or perl-image-exiftool # viewing information about media files
 
 ins nlkt gtypist
-ins rxvt-unicode-256color htop
+ins rxvt-unicode-256color htop meld
 ins cmake build-essential gcc-multilib g++-multilib lib32stdc++6
 ins libqt4-dev libxfixes-dev libxtst-dev libxinerama-dev libqtwebkit-dev
 ins git gitk

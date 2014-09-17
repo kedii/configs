@@ -19,6 +19,3 @@ if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
-
-"Good with euclio/nocturne theme
-let g:airline_theme='serene'
