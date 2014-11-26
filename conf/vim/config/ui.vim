@@ -1,45 +1,25 @@
-"set cursorline      " highlight currently focused line
-set number "relativenumber  " show line numbers relative to cursor
 set novisualbell    " don't flash the screen
 set laststatus=2    " always show status line
+set ruler
+set showcmd "shows the last command entered in the very bottom right (not in powerline)
 set wildignore+=*.o,*.obj,.git,*.rbc,*.class,.svn,vendor/gems/*
-set wildmenu        " tab-completion variants menu in command mode
+set wildmenu        " visual tab-completion variants menu in command mode
 set wildmode=list:longest,full          "instead of first-choosing
-set list            " display otherwise invisible characters
 
-" Make tab char visible
-set listchars=tab:\\_,extends:>,precedes:<,nbsp:% ",eol:¬
+" Make tab char visible ">\\
+exec "set listchars=tab:\\\\_,extends:>,precedes:<,nbsp:~"
+set list            " display otherwise invisible characters
+" tab:\uBB\uBB,nbsp:%,eol:¬
+
+" No intro msg
+set shortmess+=Iat
+
 set noshowmode
 set lazyredraw        " don't redraw screen while macros are executing
 set mouse=a           " support for mouse wheel and clicks
+set ttyfast " sends more characters to the screen for fast terminal connections
 set colorcolumn=+1    " show textwidth limit
 set virtualedit=block " cursor can be positioned where there is no character
-
-
-autocmd ColorScheme * highlight! link ColorColumn StatusLineNC
-let g:solarized_termtrans=1         " use term transparent color for bg
-let g:airline_theme='serene'
-"colorscheme nocturne "molokai
-" Restore right colors for sign column in solarized
-"highlight SignColumn ctermbg=0
-
-autocmd ColorScheme * highlight DiffAdd    ctermbg=None
-autocmd ColorScheme * highlight DiffChange ctermbg=None
-autocmd ColorScheme * highlight DiffDelete ctermbg=None
-autocmd ColorScheme * highlight DiffText   ctermbg=None
-
-autocmd ColorScheme * highlight SignColumn ctermbg=None
-autocmd ColorScheme * highlight LineNr     ctermbg=None
-autocmd ColorScheme * highlight FoldColumn ctermbg=None
-autocmd ColorScheme * highlight SpecialKey ctermbg=None
-
-set background=dark "light
-
-" Fix for GitGutter
-" highlight GitGutterAdd ctermfg=green guifg=darkgreen
-" highlight GitGutterChange ctermfg=yellow guifg=darkyellow
-" highlight GitGutterDelete ctermfg=red guifg=darkred
-" highlight GitGutterChangeDelete ctermfg=yellow guifg=darkyellow
 
 set guicursor+=a:blinkwait0 " disable cursor blink in gvim
 set guioptions-=r           " disable right scrollbar
@@ -69,3 +49,4 @@ let g:Powerline_symbols = 'fancy'
 "- custom command line
 set stl=%f\ %m\ %r\ line:%l/%L(%p%%)\ col:%c\ buf:%n\ (%b)(0x%B)
 
+" vim:ts=2:sw=2:sts=2

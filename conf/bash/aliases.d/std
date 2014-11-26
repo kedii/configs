@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# clear screen for real (it does not work in Terminology)
+alias cls=' echo -ne "\033c"'
+
+# --- Often ---
+alias la='ls -A'
+alias ll='ls -alF'
+alias l='ls -CF'
+alias l.='ls -d .*'
+alias lx="ll -BX"
+alias lz="ll -S"
+
+alias cd..='cd ..'
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+# zsh prev dir: 'cd -', or it's alias '--'
+
+alias \?='which'
+
+# Push and pop directories on directory stack
+alias pu='pushd'
+alias po='popd'
+
+alias h='history'
+alias q='exit'
+
+alias du="du -h"
+alias duh='du --max-depth=1' #Or: du -hd1
+alias mkdir='mkdir -pv'
+# mkdcd() { mkdir -p "$@" && cd "$_"; }
+
+# alias _='sudo'
+# alias g='grep -in'
+# alias afind='ack-grep -il'
+

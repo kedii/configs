@@ -1,0 +1,41 @@
+#!/bin/bash
+# About 'file' command
+#   https://www.ibm.com/developerworks/community/blogs/58e72888-6340-46ac-b488-d31aa4058e9c/entry/get_over_extensions_use_file_command_to_determine_file_types_in_linux?lang=en
+
+NM="$1"
+NAME="${NM%/*}"
+EXT="${NAME##*.}"
+TYPE=$(file -i "$NM" | sed 's/.*:\s*\(\S*\);\s.*/\1/;q')
+FL="$PWD/$NM"
+
+pause() {
+    local ERR=$?
+    read -n 1 -sp "<======== Press any key to continue \
+($(date +"%T")) ========> " tmp
+    printf "$NAME\n"
+    return $ERR
+}
+
+
+# Names
+case "$NAME" in
+    Makefile*) make -f "$NAME" ;;
+    CMakeLists\.txt) sir       ;;
+*) # Extensions
+case "$EXT" in
+    sh) "$FL" && pause ;;
+    py) python "$FL" && pause ;;
+    dot) dot -Tx11 "$NM"     ;;
+    *) # Types
+    case "$TYPE" in
+         text/x-python) "$FL" ;;
+        application/x*) "$FL" ;;
+               text/x*) "$FL" && pause ;;
+        *) { stat -c '%A' "$FL" | grep -q x; } && "$FL" ;;
+    esac
+    ;;
+esac
+;;
+esac
+
+if [ $? -ne 0 ]; then pause; exit $?; fi

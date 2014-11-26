@@ -33,7 +33,12 @@ ins git gitk
 ins rtorrent
 ins fbreader zathura zathura-djvu
 
+ins zsh
+ZSH_DIR=~/.oh-my-zsh
+git clone https://github.com/robbyrussell/oh-my-zsh.git $ZSH_DIR
+
 # set default programs
 sudo update-alternatives --set vim /usr/bin/vim.gtk
 sudo update-alternatives --set editor /usr/bin/vim.gtk
 sudo update-alternatives --set x-terminal-emulator /usr/bin/urxvt
+sudo usermod -s `which zsh` kedi

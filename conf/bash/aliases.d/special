@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# --- Modify ---
+# YCM won't load on startup
+# DONT WORK. WHY?
+# It can be simpler to do restarting of vim from inside by combo leader-F12
+# let g:...
+# source $MYVIMRC
+
+alias vi='\vim -u ~/.vim/vimrc_basic'
+vimscp(){ vim scp://${2:-srk}/"${1:-$(xsel -o)}"; }
+v() {
+    local _V fl=~/.cache/vim/servername
+    if [ -f "$fl" ]; then
+        _V=$(cat "$fl")
+        vim --servername $_V --remote-silent $@
+        vim --servername $_V --remote-send ':redraw<CR>'
+    else
+        vim $@
+    fi
+}
+
+vish(){
+    local NM="${1:-`tempfile`}" shl='bash'
+    if [ ! -e "$NM" ]; then
+        if [[ 'py' == ${NM##*\.} ]]; then shl='python'; fi
+        printf "#!/usr/bin/env $shl\n\n\n" > "$NM"
+        chmod 764 "$NM"
+    fi
+    vim "$NM"
+    # vim "$NM" -c "normal i#!/usr/bin/env $shl<CR>"
+}
+#alias vim='\vim --cmd "let g:loaded_youcompleteme = 1"'
+#alias ycm='\vim --cmd "let g:loaded_youcompleteme = 0"'
+
+alias s='source ranger-auto; if [ $? -eq 2 ]; then exit; fi'
+alias w3m='\w3m google.com'
+alias w3mh='\w3m -T "text/html"'
+alias targz='tar -cvfz' # arch.tar.gz ./
+alias untargz='tar xvfz'
+alias untarbz2='tar xvfj'
+
+
+# dir with many small files sending   #ALT: scp file1 file2 ... fileN user@host:~/Downloads/
+scpto() {
+    src="${2?Need dir}"
+    cd "${src%/*}" && tar czvf - "${src##*/}" | ssh ${1?Need server} "tar -xzvf - ${3+-C "$3"}";
+}
+scpfr() {
+    src="${2?Need dir}"
+    ssh ${1?Need server} "cd '${src%/*}' && tar -czvf - '${src##*/}'" | tar -xzvf - ${3+-C "$3"};
+}
+
+alias mount='mount |column -t'
+alias mountl='sudo fdisk -l'
+# echo "alias firefox='nohup firefox &>/dev/null'" >> /etc/commonrc
+
+
+# --- Search ---
+f()  { find . -type f -iname "*$@*"; }
+ff() { find . -type f -iname $@; }
+# grep -Ri 'name' . # find in all files
+# alias ff='find ./ | grep -i '
+
+# agi() { printf "Ag: {{{\n"; ag --ignore build --ignore libs $@; printf "}}}-Ag.\n"; }
+agi() { ag -i -G '^(?:(?!build|libs|tags).)*$' $@; }
+agf() { ag -i -g $@; }
+agp() { agi --pager less $@; }
+agc() { ag -G "CMakeLists.txt|.*.cmake" $@; }
+
+hi() { if [ -z "$@" ]; then history | tail -20; else
+    history | sed 's/^\s*\(\d\+\)\s*\(.*\)$/\2 #\1' | sort -u | agi $@;
+fi; }
+
+# old=$1, new=$2 -r | recursively  # -l | print filenames
+sed_dir() { grep -rl "$1" ./* | xargs sed -i "s@$1@$2@g"; }
+
+
+# Very useful and nut aliases:
+# http://brettterpstra.com//2013/03/31/a-few-more-of-my-favorite-shell-aliases/
+# new commands
+# alias susp="sudo pm-suspend && xlock -mode matrix"
+# alias wifi="sudo netctl-auto switch-to"

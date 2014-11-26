@@ -1,0 +1,3 @@
+make headers from functions
+	:g/(/y M
+	"mp <C-v>}$A;<Esc>

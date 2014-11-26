@@ -1,13 +1,12 @@
-" Ctrl-пробел для автодополнения
+" Built-in autocompletion, word, line
 inoremap <C-space> <C-x><C-o>
+" inoremap <C-space> <C-x><C-l>
 
-" set tildeop   "allow moves for register change, like  ~w -- for word
+" Send shizzle to the black hole (Remove)
+noremap <Leader>r "_d
 
-" Выбор формата концов строк (dos - , unix - , mac - ) -->
-"set wcm=
-"menu Encoding.FileFormat.unix :set fileformat=unix
-"menu Encoding.FileFormat.dos :set fileformat=dos
-"menu Encoding.FileFormat.mac :set fileformat=mac
-"map :emenu Encoding.FileFormat.
-" Выбор формата концов строк (dos - , unix - , mac - ) <--
+" Line split
+nnoremap K  a<CR><Right><Esc>
+nnoremap gK i<CR><Right><Esc>
+nnoremap gX a<Del><Esc>
 

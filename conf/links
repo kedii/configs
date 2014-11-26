@@ -5,15 +5,15 @@ lndir(){
 	if [ ! -d ~/.$1 ] || [ -L ~/.$1 ]; then
 	if [ -L ~/.$1 ]; then
 	    rm ~/.$1
-	fi   
+	fi
 	    ln -sv "$dir"/$1 ~/.$1
 fi
-	
+
 }
 ln -svf "$dir"/pentadactylrc ~/.pentadactylrc
 
 mkdir -p ~/.config/gtk-3.0
-ln -svf "$dir/settings.ini" ~/.config/gtk-3.0/settings.ini 
+ln -svf "$dir/settings.ini" ~/.config/gtk-3.0/settings.ini
 ln -svf "$dir/gtkrc-2.0" ~/."gtkrc-2.0"
 ln -svf "$dir/Xresources" ~/."Xresources"
 ln -svf "$dir/profile" ~/."profile"
@@ -21,10 +21,12 @@ ln -svf "$dir/bashrc" ~/."bashrc"
 mkdir -p ~/.config/copyq
 ln -svf "$dir/copyq.conf" ~/.config/copyq/copyq.conf
 
+lndir bash
+ln -svf "$dir/bash/zsh/zshrc" ~/."zshrc"
 lndir i3
 lndir urxvt
-lndir bin 
+lndir bin
 lndir ranger
-ln -svf ~/.ranger ~/.config/ranger 
+ln -svf ~/.ranger ~/.config/ranger
 lndir vim
 ln -svf "$dir/vim/vimrc" ~/.vimrc

@@ -1,13 +1,14 @@
-nnoremap <Leader>dD :diffoff<Enter>
-nnoremap <Leader>dd :diffupdate<Enter>
-nnoremap <Leader>dt :diffthis<Enter>
-nnoremap <Leader>dT :DiffOrig<Enter>
+nnoremap \dD :diffoff<Enter>
+nnoremap \dd :diffupdate<Enter>
+nnoremap \dt :diffthis<Enter>
+nnoremap \dT :DiffOrig<Enter>
 
 if &diff
   "---------------------------------------------------------------------------
   " Randy Morris' convenient diff mappings
   " http://www.reddit.com/r/vim/comments/kz84u#c2oiq1a
   "---------------------------------------------------------------------------
+  set wrap
 
   " allows you to 'do undo', or in other words 'undo a change in the opposite
   " window'
@@ -25,13 +26,14 @@ if &diff
   " both changes
   vnoremap p :diffput <bar> diffupdate<enter>
   vnoremap o :diffget <bar> diffupdate<enter>
+
 else
   " setup for non-diff mode
 endif
 
 " Use :DiffOrig to see the differences between the current buffer and the
 " file it was loaded from. Use :diffupdate then
-command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
+command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
     \ | diffthis | wincmd p | diffthis
 
 

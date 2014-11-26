@@ -1,18 +1,20 @@
 
-" As simple as Ctrl-S under Win,
-" {koi8-r, imb866, cp-1251, utf8, reg:utf-16le, :set fenc=utf8}
-noremap <Leader>s :write ++enc=utf8<CR>
-noremap <Leader>S :saveas<Space>
-
 " For when you forget to sudo.. Really Write the file.
 cnoremap e!! e !sudo tee %
 cnoremap w!! w !sudo tee % >/dev/null
 
+" Change Working Directory to that of the current file
+noremap \cwd :lcd %:p:h
+
 " generate 'tags' file: obsolete by easytags
 nnoremap <silent> <F1> :!ctags-exuberant --recurse<CR>
+
 " reload updated settings in running vim instance
-nnoremap <S-F1> :source $MYVIMRC<CR>
-"nmap <silent> <leader>sv :so $MYVIMRC<CR>
+nnoremap <S-F1> :source $MYVIMRC \| AirlineRefresh<CR>
+" make current vim as the main server
+nnoremap <S-F2> :call writefile([v:servername], expand("~/.cache/vim/servername"), "b") \| echo "ServerName: " . v:servername<CR>
+
+"http://en.cppreference.com/mwiki/index.php?title=Special%3ASearch&search=memcpy
 
 noremap <F6> :setlocal spell! spelllang=uk,en_us,ru_yo<CR>
 
@@ -29,3 +31,6 @@ nmap <Leader>- A-<Esc><Leader>_
 nmap <Leader>= mzyypVr=:.+1g/^=\+/d<Enter>`z
 " format current line as a second-level heading in markdown (uses `z marker)
 nmap <Leader>+ mzyypVr-:.+1g/^-\+/d<Enter>`z
+
+
+command! -bar -nargs=? MapDump redir > ~/vim_map_dump | map <args> | redir END
