@@ -8,11 +8,11 @@ set winminheight=8
 set winwidth=79
 set winminwidth=15
 
-" switch with magnifying
-noremap  zh  <C-W>h<C-W>_
-noremap  zj  <C-W>j<C-W>_
-noremap  zk  <C-W>k<C-W>_
-noremap  zl  <C-W>l<C-W>_
+" switching
+noremap  zh  <C-W>h
+noremap  zj  <C-W>j
+noremap  zk  <C-W>k
+noremap  zl  <C-W>l
 
 " Move between folds
 noremap  zJ  zj
@@ -34,11 +34,31 @@ noremap  gL  :<C-U>blast<CR>
 " nnoremap <Leader>3 <C-W>v
 
 " collapse other windows
-nnoremap <Leader>0 <C-W><Bar><C-W>_
+" nnoremap <Leader>0 <C-W><Bar><C-W>_
 " all windows equal size
-nnoremap <Leader>9 <C-W>=
+" nnoremap <Leader>9 <C-W>=
 " close other windows
-nnoremap <Leader>1 <C-W>o
+" nnoremap <Leader>1 <C-W>o
 " close current window
 " nnoremap <Leader>4 <C-W>c
 
+" Leader '\' {{{
+let s:leader = g:mapleader
+let mapleader = "\\"
+
+" Toggle to last edited buffer/file
+nnoremap <Leader>` :b#<CR>
+
+nnoremap <Leader>1 :1b<CR>
+nnoremap <Leader>2 :2b<CR>
+nnoremap <Leader>3 :3b<CR>
+nnoremap <Leader>4 :4b<CR>
+nnoremap <Leader>5 :5b<CR>
+nnoremap <Leader>6 :6b<CR>
+nnoremap <Leader>7 :7b<CR>
+nnoremap <Leader>8 :8b<CR>
+nnoremap <Leader>9 :9b<CR>
+nnoremap <Leader>0 :10b<CR>
+
+let mapleader = s:leader
+" }}}

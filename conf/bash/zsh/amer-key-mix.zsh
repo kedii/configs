@@ -7,6 +7,10 @@
 # vi-mode
 bindkey -v
 
+# History completion on pgup and pgdown
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end  history-search-end
+
 bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
 bindkey '^B' backward-char
@@ -55,8 +59,8 @@ bindkey -s -M vicmd ',d' '0d$iq\n'
 export KEYTIMEOUT=20
 bindkey -s ',d' '^Uq\n'
 bindkey -s ',s' '^Us\n'
-bindkey -s 'lf' '^['
-bindkey -s 'kd' '^M'
+# bindkey -s 'lf' '^['
+# bindkey -s 'kd' '^M'
 
 alias sh-rc-reload="source ~/.zshrc && echo 'ZSH config reloaded'"
 bindkey -s -M vicmd '^[[24~' '0d$ish-rc-reload\n\e'

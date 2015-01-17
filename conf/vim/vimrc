@@ -3,7 +3,6 @@
 " 100%:    https://github.com/MPogoda/dotfiles
 "  80%: https://github.com/euclio/vim-settings/blob/master/vimrc
 
-
 if has("unix")
     language messages C
 
@@ -65,7 +64,7 @@ if !filereadable(neobundle_readme)
     echom 'NeoBundle not found. Installing...'
 
     call mkdir(expand('$VIMHOME/bundle'), 'p')
-    silent exec '!git clone https://github.com/Shougo/neobundle.vim' $NEOBUNDLE
+    silent exec '!git clone --depth=1 https://github.com/Shougo/neobundle.vim' $NEOBUNDLE
     let new_vundle_install=1
 endif
 "===============================================
@@ -80,10 +79,11 @@ if has ('vim_starting')
 "behave mswin
 endif
 "===============================================
-" Use only git protocol. If firewall -- set https.
+" Use only git protocol. If firewall -- set https. Can ssh.
 let g:neobundle#types#git#default_protocol = 'git'
 " or see neobundle-options-type__depth
 let g:neobundle#types#git#clone_depth = 1   "shallow copy
+let g:neobundle#types#git#enable_submodule = 1
 
 call neobundle#begin(expand('$VIMHOME/bundle/'))
   "Improves vim start time
@@ -122,7 +122,7 @@ augroup vimrc
 augroup END
 
 if has('win32') || has('win64')
-  cd e:\
+  cd d:\
 endif
 
 " backup current file, not deleted afterwards: you need free space!

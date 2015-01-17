@@ -216,10 +216,11 @@ class shell(Command):
             # Amer: fix to load aliases working from shell, setopt aliases;
             # Using ~/.zshenv will crash git commands
             # ERROR: will not work with sudo (shell -r)!
-            # from ranger.ext.shell_escape import shell_quote as quo
-            # self.fm.execute_command("source ~/.bash/aliases; eval "
-            #         + quo(command), flags=flags)
-            self.fm.execute_command(command, flags=flags)
+            from ranger.ext.shell_escape import shell_quote as quo
+            self.fm.execute_command("\
+                    source ~/.bash/aliases; \
+                    eval " + quo(command), flags=flags)
+            # self.fm.execute_command(command, flags=flags)
 
     def tab(self):
         from ranger.ext.get_executables import get_executables

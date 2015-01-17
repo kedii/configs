@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+# TODO: Make on basis of this file the generator of simple scripts like
+#   'compile && run' for specified project
+
+ARGS="$@"
+DIR=$(pwd)
+BDR="$DIR/build"
+BIN=""
+cd "$DIR"
+
+wpause() { pause $? -e "$NAME" || { [ $? -ne -7 ] && exit $? || exit; }; }
+
+dir_build() {
+    if [ -f "./compile" ]; then
+        ./compile
+    elif [ -f "./Makefile" ]; then
+        make # make -C "$BDR"
+        # set makeprg=ruby\ -c\ %
+    elif [ -f "./CMakeLists.txt" ]; then
+        !sir bR
+    else # then cd ..
+        return -1;
+    fi
+    wpause
+}
+
+file_build() {
+#else if &filetype =~ 'sh'
+#    exec l:run . './% && read tmp'
+    # let lst=substitute(glob(dir.'/**/*.c'), '\n', ' ', 'g')
+
+    # if len(l:lst) > 0
+    #   call mkdir(l:bdir, 'p')
+    # cd "$BDR" &&
+    case "$1" in
+    *.c|*.cpp|"") gcc -O1 -g3 -o "$BIN" -I "$DIR" ${1:-*.c} ;;
+               *) actualee "$1" ;;
+    esac
+    wpause
+}
+
+run_build() {
+    if [ -f "./run" ]; then
+        ./run
+    elif [ -f "./Makefile" ] && grep -q '^run:' ./Makefile; then
+        make run
+    elif [ -f "$BIN" ]; then
+        "$BIN"
+    fi
+    wpause
+}
+
+# Priority for files:
+#   #1 modeline in file
+#   compile
+#   Makefile
+#   CMakeLists.txt
+# If -f .sirrc -- then compile all *.c??, Else -- only current file
+
+# Build each
+if [ -z "$ARGS" ]; then
+    # Recursive search for project root dir
+    while [ "$DIR" != "$HOME" ] && [ ! -d "$PREV/.git" ]
+    do
+        dir_build && break || { ret=$?;  }
+        cd .. && PREV="$DIR" && DIR=$(pwd)
+    done
+    BIN="$DIR/${DIR##*/}.bin"
+
+else for entry in "${ARGS[@]}"; do
+
+    BIN="$DIR/${entry%.*}.bin"
+    if [ -d "$entry" ]
+    then cd "$entry" && dir_build
+    else file_build "$entry"; fi
+
+done; fi
+
+
+# Run
+if [ $# -le 1 ]; then
+    run_build;
+fi
+
+exit ${ret:-0}

@@ -1,11 +1,21 @@
 #!/bin/bash
 
-# 1..5..inf stars as quality,
-# or name for dir for grouping
-choice=${1}
+source ~/.bash_export
 
-dir=~/media/Music
+case "$CURR_PROF" in
+    home) dir=/media/$CURR_USER/Umi/Music ;;
+       *) dir=~/media/Music ;;
+esac
+
 pd="$dir/++"
+
+if [ "$1" == "-l" ]; then
+    ls "$pd/$2"
+    exit
+fi
+
+# 1..9..inf stars as quality, or name for dir for grouping, or dir/subdir tag
+choice=${1}
 
 fl="$dir/`mpc -f '%file%' | sed '1q'`"
 
@@ -16,7 +26,21 @@ if [ -z "$choice" ]; then
     choice=$( find . -maxdepth 1 -type d -exec basename {} \; | $DMENU)
 fi
 
-dst="$pd/$choice"
-mkdir -p "$dst"
-mv -i -v -b "$fl" --target-directory="$dst/"
-mpc del 0
+if [ -n "$choice" ]; then
+    dst="$pd/$choice"
+    curr="$(mpc -f '[%position%]' | sed '1q')"
+    mkdir -p "$dst" \
+    && mv -i -v -b "$fl" --target-directory="$dst/" \
+    && mpc next >/dev/null && mpc del $curr #Del current, interrupts cast by ssh: mpc del 0
+fi
+
+# To be able send many request w/o retype password to SSH
+# You can do this cleanly with an ssh 'control socket'. To talk to an
+# already-running SSH process and get it's pid, kill it etc. Use the 'control
+# socket' (-M for master and -S for socket) as follows:
+#   $ ssh -M -S my-ctrl-socket -fnNT -L 50000:localhost:3306 jm@sampledomain.com
+#   $ ssh -S my-ctrl-socket -O check jm@sampledomain.com
+# Master running (pid=3517)
+#   $ ssh -S my-ctrl-socket -O exit jm@sampledomain.com
+# Exit request sent.
+# Note that my-ctrl-socket will be an actual file that is created.

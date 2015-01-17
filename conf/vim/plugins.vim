@@ -6,7 +6,10 @@ let mapleader="\\"
 
 NeoBundle 'Valloric/ListToggle'
 " Ascii graph drawing in vim
-"NeoBundleLazy 'vim-scripts/DrawIt'
+
+NeoBundleLazy 'vim-scripts/DrawIt', {
+    \ 'autoload' : { 'commands' : 'DrawItStart' },
+    \ }
 
 "==========================================
 " All commands below will use this leader, commands above -- will use '\'
@@ -29,9 +32,9 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 "\ 'mappings' : ['<Plug>(pluign_mapping)']
 "\ }
 "\}
+
+" TODO: there must be checking on mingw! Too many plugins depends on vimproc.
 " MSG: build : { 'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."' }
-
-
 " Asynchronous execution plugin for Vim
 "   let vimproc_updcmd = has('win64') ?
 "     \ 'tools\\update-dll-mingw 64' : 'tools\\update-dll-mingw 32'
@@ -65,21 +68,10 @@ NeoBundleLazy 'Shougo/vimshell.vim', {
     \   'mappings' : ['<Plug>(vimshell_'],
     \ }}
 
-" DEPRECATED: use snip-ranger-filechooser.vim
-" NeoBundleLazy 'Shougo/vimfiler', {
-"     \ 'depends' : 'Shougo/unite.vim',
-"     \ 'autoload' : {
-"     \    'commands' : [{ 'name' : 'VimFiler',
-"     \                    'complete' : 'customlist,vimfiler#complete' },
-"     \                  'VimFilerExplorer',
-"     \                  'Edit', 'Read', 'Source', 'Write'],
-"     \    'mappings' : ['<Plug>(vimfiler_'],
-"     \    'explorer' : 1,
-"     \ }}
-
-" Ultimate hex-editing system,  depends on hexript for some optional scripts
+" Ultimate hex-editing system
+" depends on hexript for some optional scripts
+"   (now that repo 'rbtnn/hexript.vim' don't exists)
 NeoBundle 'Shougo/vinarise.vim', {
-    \ 'depends' : 'rbtnn/hexript.vim',
     \ 'autoload' : {
     \    'commands' : ['Vinarise', 'VinariseDump'],
     \    'explorer' : 1,
@@ -95,9 +87,10 @@ NeoBundle 'Shougo/vinarise.vim', {
 
 " Super-mega-replace for bunch of plugins
 " See: http://bling.github.io/blog/2013/06/02/unite-dot-vim-the-plugin-you-didnt-know-you-need/
-NeoBundle 'Shougo/unite.vim', { 'name' : 'unite.vim'
-                            \ , 'depends' : 'Shougo/vimproc'
-                            \ }
+NeoBundle 'Shougo/unite.vim', {
+    \ 'name' : 'unite.vim'
+    \ , 'depends' : 'Shougo/vimproc'
+    \ }
 NeoBundleLazy 'Shougo/unite-outline', {
     \ 'depends' : 'unite.vim'
     \ , 'autoload' : { 'unite_sources' : 'outline' }
@@ -117,12 +110,16 @@ NeoBundle 'osyo-manga/vim-marching', {
     \ }
 
 NeoBundleLazy 'Shougo/neocomplete', {
-    \ 'vim_version' : '7.3.885',
-    \ 'depends' : 'Shougo/context_filetype.vim',
     \ 'disabled' : !has('lua'),
+    \ 'vim_version' : '7.3.885',
+    \ 'depends' :
+    \   [ 'Shougo/context_filetype.vim'
+    \   , 'Shougo/vimproc.vim'
+    \   ],
     \ 'autoload': {
     \   'insert': 1,
     \ }}
+
 " SirVer/ultisnips
 " NeoBundle 'Shougo/neosnippet.vim', {
 "     \ 'vim_version': '7.3.885',
@@ -170,16 +167,46 @@ if has('unix')
 "   6. make
 " }}}
     " For win: https://github.com/Valloric/YouCompleteMe/wiki/Windows-Installation-Guide
+else
+
+"ONLY FOR WIN: on unix use snip-ranger-filechooser.vim
+NeoBundleLazy 'Shougo/vimfiler', {
+    \ 'depends' : 'Shougo/unite.vim',
+    \ 'autoload' : {
+    \    'commands' : [{ 'name' : 'VimFiler',
+    \                    'complete' : 'customlist,vimfiler#complete' },
+    \                  'VimFilerExplorer',
+    \                  'Edit', 'Read', 'Source', 'Write'],
+    \    'mappings' : ['<Plug>(vimfiler_'],
+    \    'explorer' : 1,
+    \ }}
 
 endif
+
+
+
+"" Python =======================
+
+" Temporary disabled. Reported it has perfomance troubles with Jedi.
+" NeoBundle 'klen/python-mode', {
+"   \ 'autoload' : { 'filetypes' : [ 'python' ] } }
+NeoBundle 'davidhalter/jedi-vim', {
+    \ 'autoload' : { 'filetypes' : [ 'python' ] } }
+
+
+
 " ======================================
 " Readline style insertion
 " http://www.vim.org/scripts/script.php?script_id=4359
 NeoBundle 'tpope/vim-rsi'
+" Automatic not-persistent closing statements
 NeoBundle 'tpope/vim-endwise'
+" Extend support for '.' command
 NeoBundle 'tpope/vim-repeat'
 " Manage surrounding ('"<p>...) by replace cs"' or delete ds"
 NeoBundle 'tpope/vim-surround'
+" Use CTRL-A/X to increment dates, times, and more
+NeoBundle 'tpope/vim-speeddating'
 " Manage function arguments with textobj 'a,' 'i,', shifting with '<,' '>,'
 NeoBundle 'PeterRincker/vim-argumentative'
 
@@ -191,7 +218,7 @@ NeoBundle 'PeterRincker/vim-argumentative'
 "NeoBundle 'kana/vim-smartinput'
 
 
-":Make cover for long-running tasks
+":Make cover for long-running tasks asynchronous (as like by ssh)
 NeoBundle 'tpope/vim-dispatch'
 NeoBundleLazy 'tpope/vim-markdown', { 'autoload' : { 'filetypes' : [ 'markdown' ] } }
 
@@ -338,14 +365,15 @@ NeoBundle 'scrooloose/syntastic'
 "NeoBundle 'scrooloose/nerdtree, { 'augroup' : 'NERDTreeHijackNetrw'}'
 
 """ Ability to edit entries from qf or lc windows in new buffer
-" NeoBundle 'jceb/vim-editqf'
+" TRY ALT: quickfix-reflector.vim (http://www.vim.org/scripts/script.php?script_id=4890)
+"NeoBundle 'jceb/vim-editqf'
 
 " Autoformatting with one button, can use custom (like clang-styler)
-" NeoBundle 'Chiel92/vim-autoformat'
+NeoBundle 'Chiel92/vim-autoformat'
 " Auto-formatter for c/cpp/obj-c
 " NeoBundle 'rhysd/vim-clang-format'
 " DEP BY: vim-clang-format
-" NeoBundle 'kana/vim-operator-user'
+NeoBundle 'kana/vim-operator-user'
 
 " Documentation online finder in one button for word under cursor
 " Keithbsmiley/investigate.vim
@@ -357,7 +385,7 @@ NeoBundle 'octol/vim-cpp-enhanced-highlight'
 " https://github.com/beyondmarc/opengl.vim
 
 " Highlight choosen
-" NeoBundle 't9md/vim-quickhl'
+NeoBundle 't9md/vim-quickhl'
 
 
 " Colorize html-codes
@@ -400,7 +428,7 @@ NeoBundle 'chrisbra/Recover.vim'
 NeoBundle 'henrik/vim-indexed-search'
 NeoBundle 'bronson/vim-visual-star-search'
 " Multiple hl for searching by / ? or g/
-"NeoBundle 'haya14busa/incsearch.vim'
+NeoBundle 'haya14busa/incsearch.vim'
 " :substitute preview
 NeoBundle 'osyo-manga/vim-over'
 " }}} ======================================
@@ -410,12 +438,13 @@ NeoBundle 'osyo-manga/vim-over'
 " Add new virtual cursor for next occurance of word under cursor
 " Or add them for each line of multiline selection
 " Ctrl-n  --> Ctrl-p, Ctrl-x, and <Esc>
-" NeoBundle 'kris89/vim-multiple-cursors'
+NeoBundle 'kris89/vim-multiple-cursors'
 NeoBundle 'terryma/vim-smooth-scroll'
 " Press + to expand the visual selection  and _ to shrink it.
 NeoBundle 'terryma/vim-expand-region'
+
 " Move text (line or vselect) in more friendly way, then :m[ove]
-" NeoBundle 'matze/vim-move'
+NeoBundleLazy 'matze/vim-move', { 'gui' : 1, }
 
 " ======================================
 
@@ -423,17 +452,21 @@ NeoBundle 'terryma/vim-expand-region'
 " NeoBundleLazy 'rkitover/vimpager'
 
 " Fast table creation and modification
-" NeoBundle 'dhruvasagar/vim-table-mode'
+NeoBundleLazy 'dhruvasagar/vim-table-mode', {
+    \ 'autoload': { 'commands' : ['TableModeEnable'], },
+    \ }
+
 " ALT: http://tiddlywiki.com  -- one-page wiki
-NeoBundle 'vimoutliner/vimoutliner', {
+NeoBundleLazy 'vimoutliner/vimoutliner', {
     \ 'autoload' : { 'filetypes' : [ 'votl', 'txt' ], },
     \ }
 
+"NeoBundleLazy 'neilagabriel/vim-geeknote', {
+"    \ 'vim_version': '7.4.364',
+"    \ 'autoload': { 'commands' : ['Geeknote'], },
+"    \ }
+
 " ======================================
 " Colorschemes
-" 'jnurmine/Zenburn' -- dark-brown, low-contract
-"NeoBundle 'euclio/vim-nocturne',
-NeoBundle 'tomasr/molokai'
-" NeoBundle 'noahfrederick/vim-hemisu'
+" NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/vim-colors-solarized'
-" NeoBundle 'chriskempson/vim-tomorrow-theme'

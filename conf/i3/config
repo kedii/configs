@@ -1,4 +1,4 @@
-#% AutoGen by './gen_i3_config.sh'. Do NOT touch! %#
+#% AutoGen by '/home/kedi/rep/airy/cfg/i3/i3-config.gen'. Do NOT touch! %#
 # vim: ft=sh
 # i3 config file (v4) :
 # http://i3wm.org/docs/
@@ -41,7 +41,7 @@ force_focus_wrapping no
 #  Assume you are on workspace "1: www" and switch to "2: IM" using mod+2 because somebody sent you a message. You don’t need to remember where you came from now, you can just press $mod+2 again to switch back to "1: www".
 workspace_auto_back_and_forth yes
 
-#floating_minimum_size 75 x 50
+# floating_minimum_size 100 x 80
 #floating_maximum_size -1 x -1
 
 ### New wksp ###
@@ -51,6 +51,7 @@ hide_edge_borders none # <none|vertical|horizontal|both>
 # border <normal|pixel> [0-9], only 'normal' with titlebar
 new_window pixel 1
 new_float pixel 1
+
 
 # ==================== Appearance ===========================
 
@@ -81,6 +82,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+semicolon focus parent
 bindsym $mod+Shift+semicolon focus child
 #bindsym $mod+apostrophe focus child
+bindsym $mod+x [urgent=latest] focus
 
 bindsym $mod+Tab workspace next_on_output
 bindsym $mod+Shift+Tab workspace prev_on_output
@@ -92,9 +94,6 @@ bindsym $mod+Control+Right workspace next
 bindsym $mod+a workspace back_and_forth
 bindsym $mod+Control+a move container to workspace back_and_forth; workspace back_and_forth
 bindsym $mod+Control+Shift+a move container to workspace back_and_forth
-
-#i3-msg 'rename workspace "1: www" to "10: www"'
-bindsym $mod+z exec i3-input -P 'WS Name: ' -F 'exec --no-startup-id ~/.i3/ext/rename_current_workspace "%s"'
 
 ### ==================== Workspaces ===================== ###
 
@@ -118,6 +117,7 @@ bindsym $mod+z exec i3-input -P 'WS Name: ' -F 'exec --no-startup-id ~/.i3/ext/r
 # Toggle show/hide for the first scratchpad window (you can have >1 scratchpad container)
 bindsym $mod+i scratchpad show
 bindsym $mod+Shift+i move scratchpad
+bindsym $mod+Control+i floating toggle
 
 # By default, scratchpads only contain a single window. However, containers can also be made a scratchpad.
 # Create a new container (for example, Mod+Enter), split it (Mod+v) and create another container. Focus the parent (Mod+a), split in the opposite direction (Mod+h), and create again.
@@ -129,15 +129,13 @@ bindsym $mod+Shift+i move scratchpad
 # Change focus between tiling / floating windows #toggle/enable
 # Toggle tiling / floating (also remove current window from scratchpad)
 # mod+Control+space don't work with my xkb (no keycode!), use space for some more useful
-bindsym $mod+Shift+f focus mode_toggle
-bindsym $mod+Control+f floating toggle
+bindsym $mod+w focus mode_toggle
+bindsym $mod+Shift+w floating toggle
 
 # Show the sup-mail scratchpad window, if any.
 # bindsym mod4+s [title="^Sup ::"] scratchpad show
 
-# switching to the appropriate workspace and setting focus to the windows
-# Need module such as launcher with the same names but for focusing
-
+# Need module such as launcher with the same names but for focusing. Use dmenu?
 
 ### ===================== Multi-monitors ===================== ###
 # SEE: configuring your monitors and 'xrandr' usage
@@ -152,15 +150,16 @@ bindsym $mod+Control+f floating toggle
 
 # Move the current workspace to the next output
 # (effectively toggles when you only have two outputs)
-bindsym $mod+bracketleft  focus output left
-bindsym $mod+bracketright focus output right
-bindsym $mod+Control+bracketleft  move container to output left
-bindsym $mod+Control+bracketright move container to output right
-bindsym $mod+Control+Shift+bracketleft  move workspace to output left
-bindsym $mod+Control+Shift+bracketright move workspace to output right
+bindsym $mod+bracketleft          focus output left
+bindsym $mod+bracketright         focus output right
+bindsym $mod+Control+bracketleft  move workspace to output left
+bindsym $mod+Control+bracketright move workspace to output right
+bindsym $mod+Shift+bracketright   move container to output right; focus output right
+bindsym $mod+Shift+bracketleft    move container to output left;  focus output left
+
 # Focusing wksps in pairs on two monitors
-bindsym $mod+Shift+bracketleft  focus output left; workspace prev_on_output; focus output right; workspace prev_on_output
-bindsym $mod+Shift+bracketright focus output left; workspace next_on_output; focus output right; workspace next_on_output
+bindsym $mod+Control+Shift+bracketleft  focus output left; workspace prev_on_output; focus output right; workspace prev_on_output
+bindsym $mod+Control+Shift+bracketright focus output left; workspace next_on_output; focus output right; workspace next_on_output
 
 ## Put this window on the presentation output.
 #bindsym $mod+x move container to output VGA1
@@ -173,7 +172,9 @@ bindsym $mod+Shift+bracketright focus output left; workspace next_on_output; foc
 # bindcode 232 exec xbacklight -dec 20
 # bindcode 251 exec xbacklight -set 86
 
-bindsym $mod+x [urgent=latest] focus
+## Renaming
+#i3-msg 'rename workspace "1: www" to "10: www"'
+bindsym $mod+z exec i3-input -P 'WS Name: ' -F 'exec --no-startup-id ~/.i3/ext/rename_current_workspace "%s"'
 bindsym $mod+Insert exec --no-startup-id ~/.i3/ext/rename_as_focused
 
 
@@ -252,10 +253,12 @@ bindsym $mod+Shift+Up move up 50 px
 bindsym $mod+Shift+Right move right 50 px
 
 ### ================== Mark/Goto =================== ###
+bindsym $mod+v [class="(?i)urxvt" title="(?i)vim"] focus
+bindsym $mod+r [class="(?i)urxvt" title="(?i)ranger"] focus
 
 ### Navigation: Mark ###
-bindsym $mod+t mode "Mark this: 0..9, Mod+T"
-mode "Mark this: 0..9, Mod+T" {
+bindsym $mod+t mode "Mark this: 0..9, <mod+T>"
+mode "Mark this: 0..9, <mod+T>" {
     bindsym $mod+t exec --no-startup-id i3-input -F 'mark %s' -P 'Mark name: ', $mdef
 
     bindsym 1 mark mrk1, $mdef
@@ -270,8 +273,9 @@ mode "Mark this: 0..9, Mod+T" {
     bindsym 0 mark mrk0, $mdef
 
     bindsym Return $mdef 
-    bindsym Escape $mdef 
+    bindsym Escape $mdef
     bindsym space $mdef 
+    bindsym q $mdef
 }
 
 ### Navigation: GoTo ###
@@ -291,11 +295,60 @@ mode "GoTo mark: 0..9, Mod+G" {
     bindsym 0 [con_mark="mrk0"] focus, $mdef
 
     bindsym Return $mdef 
-    bindsym Escape $mdef 
+    bindsym Escape $mdef
     bindsym space $mdef 
+    bindsym q $mdef
 }
-bindsym $mod+v [class="(?i)urxvt" title="(?i)vim"] focus
-bindsym $mod+r [class="(?i)urxvt" title="(?i)ranger"] focus
+
+### Navigation: <F1..12> ###
+
+bindsym $mod+F1 [con_mark="mrkF1"] focus
+bindsym $mod+Shift+F1 mark mrkF1
+bindsym $mod+Shift+Control+F1 unmark mrkF1
+
+bindsym $mod+F2 [con_mark="mrkF2"] focus
+bindsym $mod+Shift+F2 mark mrkF2
+bindsym $mod+Shift+Control+F2 unmark mrkF2
+
+bindsym $mod+F3 [con_mark="mrkF3"] focus
+bindsym $mod+Shift+F3 mark mrkF3
+bindsym $mod+Shift+Control+F3 unmark mrkF3
+
+bindsym $mod+F4 [con_mark="mrkF4"] focus
+bindsym $mod+Shift+F4 mark mrkF4
+bindsym $mod+Shift+Control+F4 unmark mrkF4
+
+bindsym $mod+F5 [con_mark="mrkF5"] focus
+bindsym $mod+Shift+F5 mark mrkF5
+bindsym $mod+Shift+Control+F5 unmark mrkF5
+
+bindsym $mod+F6 [con_mark="mrkF6"] focus
+bindsym $mod+Shift+F6 mark mrkF6
+bindsym $mod+Shift+Control+F6 unmark mrkF6
+
+bindsym $mod+F7 [con_mark="mrkF7"] focus
+bindsym $mod+Shift+F7 mark mrkF7
+bindsym $mod+Shift+Control+F7 unmark mrkF7
+
+bindsym $mod+F8 [con_mark="mrkF8"] focus
+bindsym $mod+Shift+F8 mark mrkF8
+bindsym $mod+Shift+Control+F8 unmark mrkF8
+
+bindsym $mod+F9 [con_mark="mrkF9"] focus
+bindsym $mod+Shift+F9 mark mrkF9
+bindsym $mod+Shift+Control+F9 unmark mrkF9
+
+bindsym $mod+F10 [con_mark="mrkF10"] focus
+bindsym $mod+Shift+F10 mark mrkF10
+bindsym $mod+Shift+Control+F10 unmark mrkF10
+
+bindsym $mod+F11 [con_mark="mrkF11"] focus
+bindsym $mod+Shift+F11 mark mrkF11
+bindsym $mod+Shift+Control+F11 unmark mrkF11
+
+bindsym $mod+F12 [con_mark="mrkF12"] focus
+bindsym $mod+Shift+F12 mark mrkF12
+bindsym $mod+Shift+Control+F12 unmark mrkF12
 
 ### =================== Modify ===================== ###
 
@@ -332,8 +385,9 @@ mode "Modify" {
     bindsym Shift+Right move right 5 px
 
     bindsym Return $mdef 
-    bindsym Escape $mdef 
+    bindsym Escape $mdef
     bindsym space $mdef 
+    bindsym q $mdef
 }
 
 ### =================== System ===================== ###
@@ -341,9 +395,9 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+x exec --no-startup-id ~/.i3/ext/i3exit lock
 
 ### Mode: System ###
-set $system_mode i3: re(c)onf, re(n)ew, (e)xit || System: (l)ock, log(o)ut, (s)uspend, (h)ibernate, (r)eboot, shu(t)down
-bindsym $mod+Escape mode "$system_mode"
-bindsym $mod+Delete mode "$system_mode"
+set $system_mode <i3> : (r)eboot, shu(t)down, (l)ock, log(o)ut, (s)uspend, (h)ibernate | re(c)onf, re(n)ew, (e)xit
+bindsym $mod+Shift+Escape mode "$system_mode"
+bindsym $mod+Control+Delete mode "$system_mode"
 mode "$system_mode" {
     bindsym l exec --no-startup-id ~/.i3/ext/i3exit lock, $mdef
     bindsym o exec --no-startup-id ~/.i3/ext/i3exit logout, $mdef
@@ -353,68 +407,58 @@ mode "$system_mode" {
     bindsym t exec --no-startup-id ~/.i3/ext/i3exit shutdown, $mdef
     bindsym c reload
     bindsym n restart
-
     bindsym e exec --no-startup-id ~/.i3/ext/i3exit logout
 
     bindsym Return $mdef 
-    bindsym Escape $mdef 
+    bindsym Escape $mdef
     bindsym space $mdef 
+    bindsym q $mdef
 }
 
 ### ================== Launchers =================== ###
 
 ### Mode: Open ###
-bindsym $mod+o mode "Open: r v n h, g t z w, p l a s"
-mode "Open: r v n h, g t z w, p l a s" {
-    bindsym r exec --no-startup-id urxvt -name Float -e ranger, $mdef
-    bindsym v exec --no-startup-id urxvt -name Float -e vim, $mdef
+bindsym $mod+o mode "<Open> : [n]cmpcpp, [h]top | [p]owertop, [t]lp | [g]vim, [f]m, [s]ets | [m]usic"
+mode "<Open> : [n]cmpcpp, [h]top | [p]owertop, [t]lp | [g]vim, [f]m, [s]ets | [m]usic" {
     bindsym n exec --no-startup-id urxvt -name Float -e ncmpcpp, $mdef
     bindsym h exec --no-startup-id urxvt -name Float -e htop, $mdef
-    bindsym w exec --no-startup-id urxvt -name Float -e w3m google.com, $mdef
     bindsym p exec --no-startup-id urxvt -name Float -e gksudo powertop, $mdef
-    bindsym l exec --no-startup-id urxvt -name Float -e gksudo tlp start, $mdef
-
-    bindsym m exec --no-startup-id ~/.i3/ext/dmenu_mpd_fmove, $mdef
-
+    bindsym t exec --no-startup-id urxvt -name Float -e gksudo tlp start, $mdef
     bindsym g exec --no-startup-id gvim, $mdef
-    bindsym t exec --no-startup-id gvim.tex, $mdef
-    bindsym z exec --no-startup-id zathura, $mdef
-    bindsym w exec --no-startup-id wuala, $mdef
-    bindsym a exec --no-startup-id nemo --no-desktop, $mdef
-    bindsym s exec --no-startup-id /usr/lib/cinnamon-settings/cinnamon-settings.py sound, $mdef
-    bindsym e exec --no-startup-id elona, $mdef
+    bindsym f exec --no-startup-id nemo --no-desktop, $mdef
+    bindsym m exec --no-startup-id ~/.i3/ext/dmenu_mpd_fmove, $mdef
+    bindsym Shift+s exec --no-startup-id /usr/lib/cinnamon-settings/cinnamon-settings.py sound, $mdef
 
     bindsym Return $mdef 
-    bindsym Escape $mdef 
+    bindsym Escape $mdef
     bindsym space $mdef 
+    bindsym q $mdef
 }
 
 ### Mode: Focus ###
-bindsym $mod+y mode "Focus: r v n h, g t z w"
-mode "Focus: r v n h, g t z w" {
-    bindsym r [class="(?i)urxvt" title="(?i)ranger"] focus, $mdef
+bindsym $mod+y mode "<Focus> : [v]im, [r]anger, [n]cmpcpp, [h]top | [g]vim"
+mode "<Focus> : [v]im, [r]anger, [n]cmpcpp, [h]top | [g]vim" {
     bindsym v [class="(?i)urxvt" title="(?i)vim"] focus, $mdef
+    bindsym r [class="(?i)urxvt" title="(?i)ranger"] focus, $mdef
     bindsym n [class="(?i)urxvt" title="(?i)ncmpcpp"] focus, $mdef
     bindsym h [class="(?i)urxvt" title="(?i)htop"] focus, $mdef
 
     bindsym g [class="(?i)gvim"] focus, $mdef
-    bindsym t [class="(?i)gvim.tex"] focus, $mdef
-    bindsym z [class="(?i)zathura"] focus, $mdef
-    bindsym w [class="(?i)wuala"] focus, $mdef
 
     bindsym Return $mdef 
-    bindsym Escape $mdef 
+    bindsym Escape $mdef
     bindsym space $mdef 
+    bindsym q $mdef
 }
 
 ### Run: Prgs ###
 bindsym $mod+Return exec --no-startup-id urxvt
+bindsym $mod+u exec --no-startup-id urxvt
 bindsym $mod+Control+Return exec --no-startup-id urxvt -name Float
 bindsym $mod+Shift+Return exec --no-startup-id urxvt -name Float -e ranger-auto
 
 ### Run: Menus ###
 bindsym $mod+d exec "dmenu_run -p 'yes, master?' -nb '#000000' -nf '#B0E0E6' -sb '#421C84' -sf '#FFFF00' -fn -misc-fixed-medium-r-normal-*-*-130-75-75-*-*-iso8859-2"
-bindsym $mod+u exec rofi -now -font 'Sans-10' -fg '#606060' -bg '#000000' -hlfg '#ffc964' -hlbg '#0C0C00' -o 85
 bindsym Print exec scrot '%Y%m%d_%H%M%S_$wx$h.png' -e 'mv $f ~/Downloads/'
 
 ### Languages ###
@@ -423,20 +467,24 @@ bindsym $mod+Shift+9 exec --no-startup-id dbus-send --dest=ru.gentoo.KbddService
 bindsym $mod+Shift+8 exec --no-startup-id dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService      ru.gentoo.kbdd.set_layout uint32:2 && $upd lang
 
 ### Autostart ###
-exec --no-startup-id auto-once
-exec_always --no-startup-id auto-always
+exec_always --no-startup-id auto-start
 
 ### ================= Multimedia =================== ###
+
+### Control: touchpad on/off ###
+bindsym $mod+p exec --no-startup-id synclient TouchpadOff=1
+bindsym $mod+Shift+p exec --no-startup-id synclient TouchpadOff=0
+
 
 ### Control: volume ###
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse set Master 2%+ unmute && $upd volume
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse set Master 2%- unmute && $upd volume
 bindsym XF86AudioMute exec --no-startup-id amixer -q -D pulse set Master toggle && $upd volume
 
-bindsym $mod+Home exec --no-startup-id amixer -q -D pulse set Master 20% unmute && $upd volume
-bindsym $mod+Prior exec --no-startup-id amixer -q -D pulse set Master 2%+ unmute && $upd volume
-bindsym $mod+Next exec --no-startup-id amixer -q -D pulse set Master 2%- unmute && $upd volume
-bindsym $mod+End exec --no-startup-id amixer -q -D pulse set Master toggle && $upd volume
+bindsym $mod+Home exec --no-startup-id amixer -q -D pulse set Master 20% unmute && $upd volume && ~/.i3/ext/dvolbar -g
+bindsym $mod+Prior exec --no-startup-id amixer -q -D pulse set Master 2%+ unmute && $upd volume && ~/.i3/ext/dvolbar -g
+bindsym $mod+Next exec --no-startup-id amixer -q -D pulse set Master 2%- unmute && $upd volume && ~/.i3/ext/dvolbar -g
+bindsym $mod+End exec --no-startup-id amixer -q -D pulse set Master toggle && $upd volume && ~/.i3/ext/dvolbar -g
 
 ### Control: ncmpcpp ###
 bindsym XF86AudioPlay exec --no-startup-id ncmpcpp toggle && $upd mpd
@@ -452,16 +500,18 @@ bindsym $mod+Control+End exec --no-startup-id ncmpcpp stop && $upd mpd
 ### =================== Windows ==================== ###
 
 ### Windows: Settings ###
-assign [class="^Firefox$"] $w4
+assign [class="^Firefox$"]    $w4
 assign [class="^Pale\ moon$"] $w4
-assign [class="^Wine$"] $w9
-assign [class="^Wuala$"] $w10
+assign [class="^Wine$"]       $w9
+assign [class="^Steam"]       $w9
+assign [class="^t-engine64"]  $w8
 
 for_window [class="(?i)urxvt" instance="(?i)^Float*"] floating enable
 for_window [window_role="pop-up"] floating enable
 for_window [instance="feh"] fullscreen
 for_window [class="^Conky"] border none
 for_window [instance="^Download" class="^Firefox"] floating enable
+for_window [class="^t-engine64"] border none
 
 ### ================== Bar & Theme ================= ###
 bindsym $mod+grave bar mode toggle

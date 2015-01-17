@@ -8,7 +8,6 @@ noremap ' `
 noremap ` '
 
 " Pinky stratching
-noremap ,k :<C-U>!!<CR>
 noremap ,. :
 cnoremap <C-o> <C-p>
 
@@ -71,8 +70,9 @@ noremap   ,v  <C-V>
 " map # %
 
 "" VISUAL
-" select the last edited or pasted text, added last time you were in INSERT
-nnoremap gv `[v`]
+" selects the last text edited/pasted in INSERT, and reselect of last VISUAL
+noremap gv `[v`]
+noremap gV gv
 "" select last paste in visual mode
 nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
 " visually select a search result

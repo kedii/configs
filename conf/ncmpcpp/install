@@ -1,0 +1,48 @@
+#!/bin/bash
+# vim: ft=sh
+# Newest version compilation (it has working lyrics, etc)
+#   http://crunchbang.org/forums/viewtopic.php?id=37882
+
+CURR="$PWD"
+
+sudo apt-get install -y mpd mpc
+
+# stop the daemon and disable from starting on boot:
+if [ ! -e "$HOME/.mpd/pid" ]; then
+# Check if running: sudo /etc/init.d/mp status | grep -c "is running"
+    sudo service mpd stop
+    sudo update-rc.d mpd disable
+    mkdir -p "$HOME/.mpd/playlists"
+    touch $HOME/.mpd/{db,log,pid,state}
+fi
+
+
+ln -svf "$CURR/mpd.conf" ~/.mpd/mpd.conf
+
+
+LST="libboost-all-dev libmpdclient-dev libncurses5-dev libncursesw5-dev libfftw3-dev automake libreadline-dev libcurl4-gnutls-dev libtag1-dev libtool"
+sudo apt-get install -y $LST
+
+dir="$HOME/inst/ncmpcpp/"
+mkdir -p "$HOME/.ncmpcpp/"
+
+if [ -d "$dir" ]; then
+    cd "$dir"
+    git pull
+else
+    git clone --depth 1 "https://github.com/arybczak/ncmpcpp" "$dir"
+fi
+
+# Reason for the above is that debian / ubuntu based distros no longer have the
+# -mt suffix for boost libraries
+sed -i "s/^\(AS_IF\|AC_ARG_VAR\)(/# \1(/" "$dir/configure.ac"
+
+if ! which ncmpcpp >/dev/null || [ "$1" == "-c" ]; then
+    cd "$dir"
+    ./autogen.sh
+    [ $? -eq 0 ] && ./configure --enable-outputs --enable-visualizer --enable-clock --with-fftw
+    [ $? -eq 0 ] && make && sudo make install
+fi
+
+ln -svf "$CURR/ncmpcpp.conf" ~/.ncmpcpp/config
+ln -svf "$CURR/ncmpcpp.keys" ~/.ncmpcpp/bindings

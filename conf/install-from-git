@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 
 CURR_DIR_PKG=~/inst
 
@@ -43,6 +43,8 @@ git_install() { # $1 - git rep, $2 - dir name
 git_install 'vivien/i3blocks'
 git_install 'hluk/CopyQ'
 git_install 'alols/xcape'
+git_install 'hut/ranger'
+git_install 'matimatik/fbless'
 
 # pgrep kbdd
 # pkill kbdd

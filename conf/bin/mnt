@@ -2,18 +2,14 @@
 
 # ???? instead of file name
 # sudo LC_ALL="ru_RU.UTF-8" ranger (don't work but helps)
-# sudo mount -t vfat -o iocharset=utf8 /dev/sdb1 /media/$CURR_USER/sdb1
 
 # Mount fs by SSH
 # https://ru.wikipedia.org/wiki/Mount
 
 # Disk mounting util
-if [ ${#1} -eq 1 ]; then ACTION=${1}; else ACTION=m; fi
+if [ ${#1} -eq 1 ]; then ACTION=${1}; shift; else ACTION=m; fi
 LABELS="$@"
-
-if [ "$1" == 'l' ]; then
-    ls --color=auto /media/$CURR_USER; exit
-fi
+MNT="/media/$CURR_USER"
 
 dosamba() {
     local dir="$1" usr="$2" shr="$3"
@@ -21,25 +17,39 @@ dosamba() {
     sudo mount -t cifs -o user="$usr" //$shr/ "$dir"
 }
 
-case "$1" in
-    s)  dosamba /media/seclab  ${WORK_MAIL%@*} $SURC_SRV/Exchange ;;
+case "$ACTION" in
+    l)  ls --color=auto "$MNT"; exit ;;
+    # s-file.surc.kiev.ua/{exchange,projects,install}
+    s)  dosamba "$MNT/seclab"  ${WORK_MAIL%@*} $SURC_SRV/Exchange ;; #Books, ${WORK_MAIL%@*}
     sa) dosamba /media/android $ADR_USER $ADR_IPL ;;
+    *) printf "Choose from:\n" && cd /dev && ls --color=auto /dev/disk/by-label && ls --color=auto sd?[0-9] ;;
 esac
 
 domnt() {
     local lbl="$1" path="$2"
-    if [[ "$ACTION" == "u" ]] && [ -d "/media/$CURR_USER/$lbl" ]; then
-        echo "/media/$CURR_USER/$lbl"
-        sudo umount "/media/$CURR_USER/$lbl" && \
-            sudo rmdir -v "/media/$CURR_USER/$lbl"
+    if [[ "$ACTION" == "u" ]] && [ -d "$MNT/$lbl" ]; then
+        echo "$MNT/$lbl"
+        sudo umount "$MNT/$lbl" && \
+            sudo rmdir -v "$MNT/$lbl"
     fi
     if [[ "$ACTION" == "m" ]]; then
-        if [ -d "/media/$CURR_USER/$lbl" ]; then
-            sudo rmdir -v "/media/$CURR_USER/$lbl"
+        if [ -d "$MNT/$lbl" ]; then
+            sudo rmdir -v "$MNT/$lbl"
+        fi
+        sudo mkdir -p "$MNT/$lbl" && \
+            sudo mount "$path" "$MNT/$lbl"
+        echo "$MNT/$lbl"
+    fi
+    # Flash drive
+    # http://linuxsam.livejournal.com/18176.html
+    if [[ "$ACTION" == "f" ]]; then
+        if [ -d "$MNT/$lbl" ]; then
+            sudo rmdir -v "$MNT/$lbl"
         fi
         sudo mkdir -p "/media/$CURR_USER/$lbl" && \
-            sudo mount "$path" "/media/$CURR_USER/$lbl"
-        echo "/media/$CURR_USER/$lbl"
+            sudo mount -t vfat "$path" "/media/$CURR_USER/$lbl" -o rw,nosuid,nodev,relatime,uid=1000,gid=1000,fmask=0022,dmask=0077,codepage=437,iocharset=iso8859-1,shortname=mixed,showexec,utf8,flush,errors=remount-ro
+            # mount -t vfat /dev/sdb1 /media/tmp -o codepage=866,utf8
+        echo "$MNT/$lbl"
     fi
 }
 
@@ -51,9 +61,4 @@ for lbl in $LABELS; do
     else err=1; fi
 done
 
-if [ -z "$LABELS" ] || [ -n "$err" ]; then
-    printf "Choose from:\n"
-    ls --color=auto /dev/disk/by-label
-    cd /dev && ls sd*[0-9]
-fi
-
+if [ "$err" != "0" ]; then exit $err; fi
