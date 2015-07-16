@@ -1,7 +1,4 @@
 #include ".urxvt/urxvtrc"
-#include ".urxvt/urxvt_keys"
-#include ".urxvt/urxvt_ext"
 #include ".urxvt/xfontrc"
-#include ".urxvt/xtheme_solarized"
 
 Xft.dpi : 96

@@ -1,0 +1,67 @@
+#!/bin/bash
+
+MAXWAIT=30
+
+# Kill all childs
+# ( while kill -0 $$ 2>/dev/null && timeout 5 sdb root on; do
+#     sleep "${TIMEOUT:-5}"; done && kill -s SIGKILL $$ >/dev/null 2>/dev/null ) &
+# exec sdb shell $@
+
+lau() {
+    local pr="$1" args="${@:2}"
+    if which "$pr" > /dev/null || [ -f "$pr" ]; then
+        if ! pgrep "$pr" > /dev/null; then
+            printf "exec:    $pr $args \n"
+            $pr $args &
+
+            # Start the given command and wait until it's visible
+            # ERROR: this block is infinite for ~/.i3/blocks/kbdd-i3blocks or dunst.
+
+            # mypid=$! # Pid of last background process
+            # for i in `seq $MAXWAIT`; do
+            #     echo "Wait $pr $mypid: $i"
+            #     if xdotool search --onlyvisible --pid $mypid --name "$pr"; then
+            #         return 0;
+            #     fi
+            #     sleep 1
+            # done
+            #
+            # printf "Error on executing: $pr $args\n"
+            # notify "Error on executing: $pr $args" &
+            # return 1;
+        else printf "running: $pr $args \n"
+        fi
+    else printf "No such: $pr $args \n"
+    fi
+}
+
+# To be able to restart programms / reload configs for those which already launched!
+rcf() {
+    local pid=$(ps opid= -C ${1##*/})
+    [ -n "$pid" ] && kill $pid
+    lau $@
+}
+
+
+### ALWAYS ### --------------------------------------
+
+keylayout &
+feh --bg-fill ~/gort.jpg &
+[ -f ~/.Xresources ] && xrdb ~/.Xresources
+
+#[ -f ~/.Xdefaults ] && xrdb -merge ~/.Xdefaults &
+# Focus certain wksp
+#i3-msg workspace "$(i3-msg -t get_workspaces | sed 's/.*"num":1,"name":"\([^"]*\).*/\1/')" &
+
+
+### ONCE ### ----------------------------------------
+
+lau kbdd
+lau ~/.i3/blocks/kbdd-i3blocks
+rcf dunst
+lau mpd
+# lau compton
+lau copyq
+lau pidgin
+
+

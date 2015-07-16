@@ -38,3 +38,11 @@ To substitute new for all 'old's on a line type       :s/old/new/g
 To substitute phrases between two line #'s type       :#,#s/old/new/g
 To substitute all occurrences in the file type        :%s/old/new/g
 To ask for confirmation each time add 'c'             :%s/old/new/gc
+
+
+#####################################################
+----Commands with comma:
+,s   save file
+,d   close all files
+,x   close only one file
+,f   allow come to ranger and choose files for opening

@@ -41,7 +41,7 @@ force_focus_wrapping no
 #  Assume you are on workspace "1: www" and switch to "2: IM" using mod+2 because somebody sent you a message. You don’t need to remember where you came from now, you can just press $mod+2 again to switch back to "1: www".
 workspace_auto_back_and_forth yes
 
-# floating_minimum_size 100 x 80
+floating_minimum_size 100 x 80
 #floating_maximum_size -1 x -1
 
 ### New wksp ###
@@ -130,7 +130,7 @@ bindsym $mod+Control+i floating toggle
 # Toggle tiling / floating (also remove current window from scratchpad)
 # mod+Control+space don't work with my xkb (no keycode!), use space for some more useful
 bindsym $mod+w focus mode_toggle
-bindsym $mod+Shift+w floating toggle
+bindsym $mod+Control+w floating toggle
 
 # Show the sup-mail scratchpad window, if any.
 # bindsym mod4+s [title="^Sup ::"] scratchpad show
@@ -272,9 +272,9 @@ mode "Mark this: 0..9, <mod+T>" {
     bindsym 9 mark mrk9, $mdef
     bindsym 0 mark mrk0, $mdef
 
-    bindsym Return $mdef 
+    bindsym Return $mdef
     bindsym Escape $mdef
-    bindsym space $mdef 
+    bindsym space $mdef
     bindsym q $mdef
 }
 
@@ -294,9 +294,9 @@ mode "GoTo mark: 0..9, Mod+G" {
     bindsym 9 [con_mark="mrk9"] focus, $mdef
     bindsym 0 [con_mark="mrk0"] focus, $mdef
 
-    bindsym Return $mdef 
+    bindsym Return $mdef
     bindsym Escape $mdef
-    bindsym space $mdef 
+    bindsym space $mdef
     bindsym q $mdef
 }
 
@@ -384,9 +384,9 @@ mode "Modify" {
     bindsym Shift+Up move up 5 px
     bindsym Shift+Right move right 5 px
 
-    bindsym Return $mdef 
+    bindsym Return $mdef
     bindsym Escape $mdef
-    bindsym space $mdef 
+    bindsym space $mdef
     bindsym q $mdef
 }
 
@@ -409,9 +409,9 @@ mode "$system_mode" {
     bindsym n restart
     bindsym e exec --no-startup-id ~/.i3/ext/i3exit logout
 
-    bindsym Return $mdef 
+    bindsym Return $mdef
     bindsym Escape $mdef
-    bindsym space $mdef 
+    bindsym space $mdef
     bindsym q $mdef
 }
 
@@ -429,9 +429,9 @@ mode "<Open> : [n]cmpcpp, [h]top | [p]owertop, [t]lp | [g]vim, [f]m, [s]ets | [m
     bindsym m exec --no-startup-id ~/.i3/ext/dmenu_mpd_fmove, $mdef
     bindsym Shift+s exec --no-startup-id /usr/lib/cinnamon-settings/cinnamon-settings.py sound, $mdef
 
-    bindsym Return $mdef 
+    bindsym Return $mdef
     bindsym Escape $mdef
-    bindsym space $mdef 
+    bindsym space $mdef
     bindsym q $mdef
 }
 
@@ -445,9 +445,9 @@ mode "<Focus> : [v]im, [r]anger, [n]cmpcpp, [h]top | [g]vim" {
 
     bindsym g [class="(?i)gvim"] focus, $mdef
 
-    bindsym Return $mdef 
+    bindsym Return $mdef
     bindsym Escape $mdef
-    bindsym space $mdef 
+    bindsym space $mdef
     bindsym q $mdef
 }
 
@@ -481,10 +481,10 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse set Master 
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse set Master 2%- unmute && $upd volume
 bindsym XF86AudioMute exec --no-startup-id amixer -q -D pulse set Master toggle && $upd volume
 
-bindsym $mod+Home exec --no-startup-id amixer -q -D pulse set Master 20% unmute && $upd volume && ~/.i3/ext/dvolbar -g
-bindsym $mod+Prior exec --no-startup-id amixer -q -D pulse set Master 2%+ unmute && $upd volume && ~/.i3/ext/dvolbar -g
-bindsym $mod+Next exec --no-startup-id amixer -q -D pulse set Master 2%- unmute && $upd volume && ~/.i3/ext/dvolbar -g
-bindsym $mod+End exec --no-startup-id amixer -q -D pulse set Master toggle && $upd volume && ~/.i3/ext/dvolbar -g
+bindsym $mod+Home exec --no-startup-id amixer -q -D pulse set Master 20% unmute && $upd volume
+bindsym $mod+Prior exec --no-startup-id amixer -q -D pulse set Master 2%+ unmute && $upd volume
+bindsym $mod+Next exec --no-startup-id amixer -q -D pulse set Master 2%- unmute && $upd volume
+bindsym $mod+End exec --no-startup-id amixer -q -D pulse set Master toggle && $upd volume
 
 ### Control: ncmpcpp ###
 bindsym XF86AudioPlay exec --no-startup-id ncmpcpp toggle && $upd mpd
@@ -512,6 +512,9 @@ for_window [instance="feh"] fullscreen
 for_window [class="^Conky"] border none
 for_window [instance="^Download" class="^Firefox"] floating enable
 for_window [class="^t-engine64"] border none
+for_window [class="^piony.py"] floating enable
+for_window [class="^Pidgin"] floating enable, border pixel 3
+for_window [class="^Pidgin" title="Buddy List"] move scratchpad
 
 ### ================== Bar & Theme ================= ###
 bindsym $mod+grave bar mode toggle
@@ -533,7 +536,7 @@ bar {
     workspace_buttons   yes
     status_command      i3blocks -c ~/.i3/i3blocks.conf
     modifier            $mod
-    
+
     font -misc-fixed-medium-r-normal--12-120-75-75-C-70-iso10646-1
     #font pango:DejaVu Sans Mono 10
     colors {

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-xrdb ~/.Xresources &
-keylayout &
-feh --bg-fill ~/gort.jpg & 
